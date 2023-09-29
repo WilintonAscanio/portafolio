@@ -6,9 +6,9 @@ import { AiFillInstagram } from 'react-icons/ai'
 const SocialNetworks = () => {
     return (
         <div className='socialNetworks'>
-            <a href='https://www.linkedin.com/in/wilintonascanio/'><BsLinkedin /></a>
-            <a href='https://github.com/WilintonAscanio'><BsGithub /></a>
-            <a href='https://www.instagram.com/wilintonascanio12/'><AiFillInstagram /></a>
+            <a href='https://www.linkedin.com/in/wilintonascanio/' target='_blank'><BsLinkedin /></a>
+            <a href='https://github.com/WilintonAscanio' target='_blank'><BsGithub /></a>
+            <a href='https://www.instagram.com/wilintonascanio12/' target='_blank'><AiFillInstagram /></a>
         </div>
     )
 }

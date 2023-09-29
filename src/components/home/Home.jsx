@@ -5,6 +5,8 @@ import photo from '../../assets/profile.jpeg'
 import SocialNetworks from './SocialNetworks'
 import pdf from '../../assets/wilinton.pdf'
 import About from '../about/About'
+import Projects from '../projects/Projects'
+import colombia from '../../assets/colombia.png'
 
 const Home = () => {
 
@@ -16,6 +18,15 @@ const Home = () => {
                 <section>
                     <strong>Hi, I'm Wilinton Ascanio Toro</strong>
                     <h2>Web Developer</h2>
+                    <strong style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '5px'
+                        , fontSize: '16px'
+
+                    }}><img src={colombia} style={{
+                        height: '30px'
+                    }} alt="colombia" />Colombia</strong>
                     <a href={pdf} target="_blank" download='CVWilintonAscanioToro.pdf' className='btnDownload'>DOWNLOAD RESUME</a>
                 </section>
                 <figure>
@@ -23,6 +34,7 @@ const Home = () => {
                 </figure>
             </div>
             <About />
+            {/* <Projects /> */}
 
         </article>
     )

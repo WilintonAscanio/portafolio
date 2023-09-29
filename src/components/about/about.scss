@@ -25,7 +25,33 @@
 
         & img {
             height: 60px;
+
+            &:hover {
+                scale: 1.2;
+                transition: scale .5s;
+                cursor: pointer;
+            }
         }
 
+    }
+}
+
+@media (max-width :950px) {
+    .about {
+        flex-direction: column;
+        width: 100%;
+        margin: 5% 0;
+        padding: 5%;
+
+        & p {
+            width: 100%;
+            font-size: 14px;
+        }
+
+        & figure {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+        }
     }
 }
