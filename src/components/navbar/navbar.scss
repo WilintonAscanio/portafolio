@@ -2,21 +2,25 @@ nav {
     display: flex;
     width: 100%;
     justify-content: space-between;
-    height: 40px;
+    height: 60px;
     align-items: center;
+    background-color: rgb(145, 131, 131);
+    padding: 10px;
+
+
 
 
     & ul {
         display: flex;
-        width: 50%;
         justify-content: space-around;
+        gap: 25px;
 
         & li {
             list-style: none;
             display: flex;
             cursor: pointer;
             align-items: center;
-            gap: 10px;
+            gap: 5px;
             padding: 5px;
             font-size: 18px;
 
