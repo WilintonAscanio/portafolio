@@ -1,9 +1,13 @@
 import React from 'react'
+import './home.scss'
+import Navbar from '../navbar/Navbar'
 
 const Home = () => {
-  return (
-    <div>Home</div>
-  )
+    return (
+        <article className='home'>
+            <Navbar />
+        </article>
+    )
 }
 
 export default Home
