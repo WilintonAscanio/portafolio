@@ -71,7 +71,23 @@
     }
 
 }
+.btnDownload {
+    border: 1px solid gray;
+    width: 200px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: black;
 
+    &:hover {
+        background-color: black;
+        color: white;
+        transition: background-color .5s;
+    }
+
+}
 @media(max-width : 950px) {
 
     .home {
