@@ -1,0 +1,31 @@
+.about {
+    display: flex;
+    padding: 5%;
+    width: 90%;
+    gap: 20px;
+    align-items: center;
+    margin: 0 5%;
+    // background-color: red;
+    border-top: 1px solid gray;
+
+
+    & p {
+        width: 50%;
+        text-align: justify;
+
+    }
+
+    & figure {
+        width: 50%;
+        display: grid;
+        justify-content: space-around;
+        gap: 20px;
+        grid-template-columns: auto auto auto auto auto;
+        padding: 20px;
+
+        & img {
+            height: 60px;
+        }
+
+    }
+}
