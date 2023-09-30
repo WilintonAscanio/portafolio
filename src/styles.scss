@@ -11,3 +11,12 @@
 html {
     scroll-behavior: smooth;
 }
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(144, 150, 144);
+    border-radius: 8px;
+}
