@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { createContext, useState } from 'react'
 import './navbar.scss'
 import { FormControlLabel, Switch, styled } from '@mui/material'
 import { AiOutlineHome } from 'react-icons/ai'
@@ -8,12 +8,15 @@ import { MdOutlineContactSupport } from 'react-icons/md'
 import hamburguer from '../../assets/icon-hamburger.svg'
 import iconClose from '../../assets/icon-close.svg'
 
+export const ThemeAndLanguage = createContext({})
+
 
 
 const Navbar = () => {
     const [menu, setMenu] = useState('hidden')
     const [close, setClose] = useState('closeMenu')
     const [open, setOpen] = useState('')
+    const [isDark, setIsDark] = useState(false)
 
     const openMenu = (icon) => {
         if (icon === "hamburguer") {
@@ -90,10 +93,10 @@ const Navbar = () => {
                             alignSelf: 'end',
                             margin: '10px',
                         }} alt="cerrar" className={close} onClick={() => openMenu("close")} />
-                        <li> <AiOutlineHome />Home</li>
-                        <li> <BiSolidUserDetail />About</li>
-                        <li> <GoProjectSymlink />Projects</li>
-                        <li> <MdOutlineContactSupport />Contact</li>
+                        <li><a href="#home"><AiOutlineHome />Home</a></li>
+                        <li><a href="#about"><BiSolidUserDetail />About</a></li>
+                        <li><a href="#projects"><GoProjectSymlink />Projects</a></li>
+                        <li><a href="#contact"><MdOutlineContactSupport />Contact</a></li>
                     </ul>
                 </nav>
                 <img src={hamburguer} alt="menu" className={menu} style={{

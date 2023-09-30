@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './home.scss'
 import Navbar from '../navbar/Navbar'
 import photo from '../../assets/profile.jpeg'
@@ -10,8 +10,9 @@ import colombia from '../../assets/colombia.png'
 
 const Home = () => {
 
+
     return (
-        <article className='home'>
+        <article className='home' id='home'>
             <SocialNetworks />
             <Navbar />
             <div className='home__info'>
@@ -34,7 +35,7 @@ const Home = () => {
                 </figure>
             </div>
             <About />
-            {/* <Projects /> */}
+            <Projects />
 
         </article>
     )

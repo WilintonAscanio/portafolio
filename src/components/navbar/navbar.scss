@@ -34,16 +34,23 @@ nav {
             display: flex;
             cursor: pointer;
             align-items: center;
-            gap: 5px;
             padding: 5px;
             font-size: 18px;
 
 
 
-            &:hover {
-                color: white;
-                border-bottom: 1px solid white;
 
+            & a {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                color: white;
+                text-decoration: none;
+
+                &:hover {
+                    border-bottom: 1px solid white;
+
+                }
             }
         }
     }

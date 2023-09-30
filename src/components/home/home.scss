@@ -3,6 +3,7 @@
     flex-direction: column;
     width: 100%;
     position: relative;
+    
 
     &__info {
         display: flex;
@@ -12,7 +13,6 @@
         padding: 5%;
         justify-content: space-between;
         align-items: center;
-        // background-color: red;
 
 
         & section {
@@ -30,7 +30,6 @@
         }
 
         & figure {
-            // background-color: green;
             width: 40%;
             display: flex;
             justify-content: end;
@@ -41,6 +40,7 @@
         }
     }
 }
+
 
 .socialNetworks {
     display: flex;
