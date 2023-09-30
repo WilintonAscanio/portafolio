@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react'
+import React, { useState } from 'react'
 import './navbar.scss'
 import { FormControlLabel, Switch, styled } from '@mui/material'
 import { AiOutlineHome } from 'react-icons/ai'
@@ -8,15 +8,14 @@ import { MdOutlineContactSupport } from 'react-icons/md'
 import hamburguer from '../../assets/icon-hamburger.svg'
 import iconClose from '../../assets/icon-close.svg'
 
-export const ThemeAndLanguage = createContext({})
 
 
 
-const Navbar = () => {
+const Navbar = ({ changeLanguage }) => {
     const [menu, setMenu] = useState('hidden')
     const [close, setClose] = useState('closeMenu')
     const [open, setOpen] = useState('')
-    const [isDark, setIsDark] = useState(false)
+    const [isSpanish, setIsSpanish] = useState('0')
 
     const openMenu = (icon) => {
         if (icon === "hamburguer") {
@@ -32,6 +31,13 @@ const Navbar = () => {
         }
 
     }
+    const isChanged = (event) => {
+        const newLanguage = event.target.value;
+        setIsSpanish(newLanguage);
+        changeLanguage()
+
+    }
+    console.log(isSpanish);
     const MaterialUISwitch = styled(Switch)(({ theme }) => ({
         width: 62,
         height: 34,
@@ -93,15 +99,27 @@ const Navbar = () => {
                             alignSelf: 'end',
                             margin: '10px',
                         }} alt="cerrar" className={close} onClick={() => openMenu("close")} />
-                        <li><a href="#home"><AiOutlineHome />Home</a></li>
-                        <li><a href="#about"><BiSolidUserDetail />About</a></li>
-                        <li><a href="#projects"><GoProjectSymlink />Projects</a></li>
-                        <li><a href="#contact"><MdOutlineContactSupport />Contact</a></li>
+                        {isSpanish === '1' ? <>
+                            <li><a href="#home"><AiOutlineHome />Inicio</a></li>
+                            <li><a href="#about"><BiSolidUserDetail />Sobre mi</a></li>
+                            <li><a href="#projects"><GoProjectSymlink />Proyectos</a></li>
+                            <li><a href="#contact"><MdOutlineContactSupport />Contacto</a></li></> :
+                            <>
+                                <li><a href="#home"><AiOutlineHome />Home</a></li>
+                                <li><a href="#about"><BiSolidUserDetail />About</a></li>
+                                <li><a href="#projects"><GoProjectSymlink />Projects</a></li>
+                                <li><a href="#contact"><MdOutlineContactSupport />Contact</a></li></>}
+
+                        <select value={isSpanish} onChange={isChanged} >
+                            <option value="0">English</option>
+                            <option value="1">Spanish</option>
+                        </select>
                     </ul>
                 </nav>
                 <img src={hamburguer} alt="menu" className={menu} style={{
                     color: '#ffff',
                 }} onClick={() => openMenu("hamburguer")} />
+
             </header>
         </>
     )
