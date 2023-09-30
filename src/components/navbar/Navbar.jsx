@@ -90,10 +90,10 @@ const Navbar = () => {
                             alignSelf: 'end',
                             margin: '10px',
                         }} alt="cerrar" className={close} onClick={() => openMenu("close")} />
-                        <li> <AiOutlineHome />Home</li>
-                        <li> <BiSolidUserDetail />About</li>
-                        <li> <GoProjectSymlink />Projects</li>
-                        <li> <MdOutlineContactSupport />Contact</li>
+                        <li><a href="#home"><AiOutlineHome />Home</a></li>
+                        <li><a href="#about"><BiSolidUserDetail />About</a></li>
+                        <li><a href="#projects"><GoProjectSymlink />Projects</a></li>
+                        <li><a href="#contact"><MdOutlineContactSupport />Contact</a></li>
                     </ul>
                 </nav>
                 <img src={hamburguer} alt="menu" className={menu} style={{

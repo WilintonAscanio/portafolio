@@ -10,8 +10,9 @@ import colombia from '../../assets/colombia.png'
 
 const Home = () => {
 
+
     return (
-        <article className='home'>
+        <article className='home' id='home'>
             <SocialNetworks />
             <Navbar />
             <div className='home__info'>
@@ -34,7 +35,7 @@ const Home = () => {
                 </figure>
             </div>
             <About />
-            {/* <Projects /> */}
+            <Projects />
 
         </article>
     )
