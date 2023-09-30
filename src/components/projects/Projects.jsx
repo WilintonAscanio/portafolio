@@ -13,7 +13,7 @@ const Projects = () => {
     {
       name: 'Terruño Colombiano',
       description: 'Terruño Colombiano is an online tourism platform where users can discover and share information about new destinations, as well as connect with other users to exchange experiences and travel recommendations related to trips and places of interest in Colombia.',
-      tecnologies: [react, js, sass, redux, html, firebase],
+      tecnologies: [react, js, firebase, sass, redux, html],
       img: 'https://terrunocolombiano-60fec.web.app/static/media/aleegre.7bedae4a732ca85699d4.jpeg',
       color: 'white',
       url: 'https://terrunocolombiano-60fec.web.app/welcome',
@@ -30,12 +30,12 @@ const Projects = () => {
     }
   ]
   return (
-    <article id='project' className='project'>
+    <article id='projects' className='project'>
       <strong >Projects</strong>
       <div>
         {projects?.map((project, index) =>
-          <a href={project.url} target='_blank' >
-            <section key={index} style={{
+          <a href={project.url} target='_blank' key={index} >
+            <section style={{
               backgroundImage: `linear-gradient(120deg, rgba(0,0,0,1)2%, rgba(32,32,32,0) 80%), url(${project.img})`,
               color: project.color
             }}>

@@ -13,7 +13,9 @@
 
     & div {
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-around;
+        gap: 20px;
 
         & a {
             text-decoration: none;
@@ -82,5 +84,12 @@
 
 
         }
+    }
+}
+
+@media(max-width : 950px) {
+    .project {
+        width: 100%;
+        margin: 0;
     }
 }
