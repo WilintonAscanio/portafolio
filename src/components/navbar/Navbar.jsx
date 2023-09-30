@@ -37,7 +37,6 @@ const Navbar = ({ changeLanguage }) => {
         changeLanguage()
 
     }
-    console.log(isSpanish);
     const MaterialUISwitch = styled(Switch)(({ theme }) => ({
         width: 62,
         height: 34,

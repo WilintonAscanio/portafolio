@@ -14,7 +14,6 @@ const Home = () => {
     const changeLanguage = () => {
         setSpanish(!spanish)
     }
-    console.log(spanish);
 
 
     return (
