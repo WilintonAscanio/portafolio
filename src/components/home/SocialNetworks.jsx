@@ -4,7 +4,7 @@ import { BsGithub } from 'react-icons/bs'
 import { AiFillInstagram } from 'react-icons/ai'
 import { MdEmail } from 'react-icons/md'
 
-const SocialNetworks = () => {
+const SocialNetworks = ({ isDark }) => {
     const [width, setWidth] = useState(window.innerWidth);
 
     useEffect(() => {
@@ -22,7 +22,7 @@ const SocialNetworks = () => {
     return (
         <>
             {width > 900 ?
-                <div className='socialNetworks'>
+                <div className={isDark ? 'socialNetworks socialDarks' : 'socialNetworks'}>
                     <a href='https://www.linkedin.com/in/wilintonascanio/' target='_blank'><BsLinkedin /></a>
                     <a href='https://github.com/WilintonAscanio' target='_blank'><BsGithub /></a>
                     <a href='https://www.instagram.com/wilintonascanio12/' target='_blank'><AiFillInstagram /></a>

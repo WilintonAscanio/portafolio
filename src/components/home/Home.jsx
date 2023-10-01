@@ -11,15 +11,20 @@ import Contact from '../contact/Contact'
 
 const Home = () => {
     const [spanish, setSpanish] = useState(false)
+    const [isDark, setIsDark] = useState(false)
 
     const changeLanguage = () => {
         setSpanish(!spanish)
     }
+    const changeMode = () => {
+        setIsDark(!isDark)
+
+    }
 
 
     return (
-        <article className='home' id='home'>
-            <Navbar changeLanguage={changeLanguage} />
+        <article className={isDark ? 'homeDark' : 'home'} id='home'>
+            <Navbar changeLanguage={changeLanguage} changeMode={changeMode} />
             {spanish ? <>
                 <div className='home__info'>
                     <section>
@@ -34,7 +39,7 @@ const Home = () => {
                         }}><img src={colombia} style={{
                             height: '30px'
                         }} alt="colombia" />Colombia</strong>
-                        <a href={pdf} target="_blank" download='CVWilintonAscanioToro.pdf' className='btnDownload'>DESCARGAR CV</a>
+                        <a href={pdf} target="_blank" download='CVWilintonAscanioToro.pdf' className={isDark ? 'btnDownload dark' : 'btnDownload'}>DESCARGAR CV</a>
                     </section>
                     <figure>
                         <img src={photo} alt="perfil" />
@@ -53,7 +58,7 @@ const Home = () => {
                         }}><img src={colombia} style={{
                             height: '30px'
                         }} alt="colombia" />Colombia</strong>
-                        <a href={pdf} target="_blank" download='CVWilintonAscanioToro.pdf' className='btnDownload'>DOWNLOAD RESUME</a>
+                        <a href={pdf} target="_blank" download='CVWilintonAscanioToro.pdf' className={isDark ? 'btnDownload dark' : 'btnDownload'}>DOWNLOAD RESUME</a>
                     </section>
                     <figure>
                         <img src={photo} alt="perfil" />
@@ -63,8 +68,8 @@ const Home = () => {
 
             <About spanish={spanish} />
             <Projects spanish={spanish} />
-            <Contact />
-            <SocialNetworks />
+            <Contact isDark={isDark} spanish={spanish} />
+            <SocialNetworks isDark={isDark} />
 
 
         </article>

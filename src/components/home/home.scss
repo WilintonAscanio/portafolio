@@ -1,8 +1,14 @@
+.homeDark {
+    background-color: black;
+    color: white;
+}
+
 .home {
     display: flex;
     flex-direction: column;
     width: 100%;
     position: relative;
+
 
 
     &__info {
@@ -106,6 +112,20 @@ footer {
         color: white;
 
     }
+
+}
+
+.dark {
+    color: white;
+
+    &:hover {
+        background-color: white;
+        color: black;
+    }
+}
+
+.socialDarks a {
+    color: white;
 
 }
 
