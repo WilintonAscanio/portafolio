@@ -89,6 +89,26 @@
 
 }
 
+footer {
+    background-color: black;
+    height: 100px;
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+
+    & a {
+        display: flex;
+        align-items: center;
+        font-size: 35px;
+        cursor: pointer;
+        padding: 5px;
+        text-decoration: none;
+        color: white;
+
+    }
+
+}
+
 @media(max-width : 950px) {
 
     .home {

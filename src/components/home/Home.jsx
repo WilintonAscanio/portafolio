@@ -19,7 +19,6 @@ const Home = () => {
 
     return (
         <article className='home' id='home'>
-            <SocialNetworks />
             <Navbar changeLanguage={changeLanguage} />
             {spanish ? <>
                 <div className='home__info'>
@@ -65,6 +64,8 @@ const Home = () => {
             <About spanish={spanish} />
             <Projects spanish={spanish} />
             <Contact />
+            <SocialNetworks />
+
 
         </article>
     )
