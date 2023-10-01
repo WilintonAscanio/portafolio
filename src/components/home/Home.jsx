@@ -7,6 +7,7 @@ import pdf from '../../assets/wilinton.pdf'
 import About from '../about/About'
 import Projects from '../projects/Projects'
 import colombia from '../../assets/colombia.png'
+import Contact from '../contact/Contact'
 
 const Home = () => {
     const [spanish, setSpanish] = useState(false)
@@ -63,6 +64,7 @@ const Home = () => {
 
             <About spanish={spanish} />
             <Projects spanish={spanish} />
+            <Contact />
 
         </article>
     )

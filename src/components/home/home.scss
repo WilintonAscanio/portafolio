@@ -3,7 +3,7 @@
     flex-direction: column;
     width: 100%;
     position: relative;
-    
+
 
     &__info {
         display: flex;
@@ -70,6 +70,7 @@
     }
 
 }
+
 .btnDownload {
     border: 1px solid gray;
     width: 200px;
@@ -87,6 +88,7 @@
     }
 
 }
+
 @media(max-width : 950px) {
 
     .home {
@@ -102,6 +104,8 @@
             gap: 30px;
 
             & section {
+                margin-top: 20px;
+
                 strong {
                     font-size: 40px;
                 }
@@ -117,6 +121,7 @@
             }
         }
     }
+
     .socialNetworks {
         display: none;
     }

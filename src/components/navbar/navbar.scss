@@ -6,7 +6,7 @@ header {
     width: 100%;
     padding-inline: 20px;
     top: 0;
-    background-color: black;
+    background-color: #1E2025;
     height: 60px;
     opacity: 0.7;
     z-index: 1;
@@ -62,13 +62,15 @@ nav {
             outline: none;
             width: 100px;
             height: 30px;
-            background-color: black;
+            background-color: transparent;
             color: white;
             font-size: 16px;
+
 
             & option {
                 border-radius: 8px;
                 padding: 5px;
+                background-color: black;
             }
 
         }

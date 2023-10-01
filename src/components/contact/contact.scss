@@ -1,0 +1,39 @@
+.contact {
+    display: flex;
+    width: 90%;
+    margin: 0 5%;
+    padding: 5%;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    border-top: 1px solid gray;
+
+
+    & form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 500px;
+        border: 1px solid gray;
+        padding: 20px;
+        border-radius: 7px;
+
+        & button {
+            cursor: pointer;
+            align-self: center;
+        }
+
+    }
+
+}
+
+@media(max-width: 600px) {
+    .contact {
+        width: 100%;
+        margin: 0;
+
+        & form {
+            width: 100%;
+        }
+    }
+}
