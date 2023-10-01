@@ -17,10 +17,14 @@
         border: 1px solid gray;
         padding: 20px;
         border-radius: 7px;
+        background-color: white;
+
+
 
         & button {
             cursor: pointer;
             align-self: center;
+            background-color: transparent;
         }
 
     }

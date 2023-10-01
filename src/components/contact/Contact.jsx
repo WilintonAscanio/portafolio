@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import TextField from '@mui/material/TextField';
 import './contact.scss';
 
-const Contact = () => {
+const Contact = ({ isDark, spanish }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -82,39 +82,73 @@ const Contact = () => {
 
   return (
     <article id='contact' className='contact'>
-      <strong>Contact me</strong>
-      <form onSubmit={sendEmail}>
-        <TextField
-          label='Name'
-          name='name'
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
-        <TextField
-          label='Email'
-          name='email'
-          value={formData.email}
-          onChange={handleChange}
-          required
-          error={!!emailError}
-          helperText={emailError}
-        />
-        <TextField
-          label='Message'
-          rows={8}
-          className='contact__message'
-          multiline
-          name='message'
-          value={formData.message}
-          onChange={handleChange}
-          required
-        />
+      {spanish ? <>
+        <strong>Contáctame</strong>
+        <form onSubmit={sendEmail}>
+          <TextField
+            label='Nombre'
+            name='name'
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+          <TextField
+            label='Correo electrónico'
+            name='email'
+            value={formData.email}
+            onChange={handleChange}
+            required
+            error={!!emailError}
+            helperText={emailError}
+          />
+          <TextField
+            label='Mensaje'
+            rows={8}
+            className='contact__message'
+            multiline
+            name='message'
+            value={formData.message}
+            onChange={handleChange}
+            required
+          />
 
-        <button type='submit' className='btnDownload'>
-          SEND
-        </button>
-      </form>
+          <button type='submit' className='btnDownload'>
+            ENVIAR
+          </button>
+        </form></> : <>
+        <strong>Contact me</strong>
+        <form onSubmit={sendEmail}>
+          <TextField
+            label='Name'
+            name='name'
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+          <TextField
+            label='Email'
+            name='email'
+            value={formData.email}
+            onChange={handleChange}
+            required
+            error={!!emailError}
+            helperText={emailError}
+          />
+          <TextField
+            label='Message'
+            rows={8}
+            className='contact__message'
+            multiline
+            name='message'
+            value={formData.message}
+            onChange={handleChange}
+            required
+          />
+
+          <button type='submit' className='btnDownload'>
+            SEND
+          </button>
+        </form></>}
     </article>
   );
 };

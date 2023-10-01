@@ -11,11 +11,18 @@ import iconClose from '../../assets/icon-close.svg'
 
 
 
-const Navbar = ({ changeLanguage }) => {
+const Navbar = ({ changeLanguage, changeMode }) => {
     const [menu, setMenu] = useState('hidden')
     const [close, setClose] = useState('closeMenu')
     const [open, setOpen] = useState('')
     const [isSpanish, setIsSpanish] = useState('0')
+    const [darkMode, setDarkMode] = useState(false);
+
+    const handleDarkModeChange = () => {
+        // Cuando se hace clic en el interruptor, cambia el estado del modo oscuro.
+        setDarkMode(!darkMode);
+        changeMode()
+    };
 
     const openMenu = (icon) => {
         if (icon === "hamburguer") {
@@ -87,8 +94,10 @@ const Navbar = ({ changeLanguage }) => {
         <>
             <header>
                 <FormControlLabel
-                    control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
-                    label="Change"
+                    control={<MaterialUISwitch sx={{ m: 1 }} />}
+                    label="Dark mode"
+                    checked={darkMode}
+                    onChange={handleDarkModeChange}
                 />
 
                 <nav className={open}>
