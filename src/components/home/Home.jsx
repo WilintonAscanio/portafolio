@@ -12,6 +12,8 @@ import Contact from '../contact/Contact'
 const Home = () => {
     const [spanish, setSpanish] = useState(false)
     const [isDark, setIsDark] = useState(false)
+    
+    
 
     const changeLanguage = () => {
         setSpanish(!spanish)
