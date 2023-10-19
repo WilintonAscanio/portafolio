@@ -34,7 +34,7 @@ const Projects = ({ spanish }) => {
       name: 'Pizza App',
       description: 'Pizza App is uniquely tailored to meet the needs of developers. It not only provides you with the convenience of ordering delicious pizzas but also offers you exclusive benefits. From special deals tailored to your taste to the ease of making secure online payments, Pizza App caters to your preferences. ',
       descripcion: 'La aplicación Pizza App está específicamente orientada a satisfacer las necesidades de los desarrolladores. No solo te brinda la conveniencia de ordenar deliciosas pizzas, sino que también te ofrece beneficios exclusivos. Desde ofertas especiales diseñadas para tu gusto hasta la facilidad de realizar pagos en línea de forma segura, Pizza App se adapta a tus preferencias.',
-      tecnologies: [react, js, sass, redux, html, firebase],
+      tecnologies: [react, js, sass, html],
       img: 'https://images.pexels.com/photos/8725224/pexels-photo-8725224.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
       color: 'white',
       url: ''
@@ -44,7 +44,7 @@ const Projects = ({ spanish }) => {
       name: 'Space App',
       description: 'On this platform, you can delve into various aspects related to planets, space equipment, and technologies. We provide in-depth information about different planets, as well as the latest innovations in space technology and the missions and equipment that make space exploration possible. ',
       descripcion: 'En esta plataforma, podrás explorar diversos aspectos relacionados con los planetas, equipos y tecnologías espaciales. Te ofrecemos información detallada sobre diferentes planetas, así como las últimas innovaciones en tecnología espacial y las misiones y equipos que hacen posible la exploración del espacio. ',
-      tecnologies: [react, js, sass, redux, html, firebase],
+      tecnologies: [react, js, sass, html],
       img: 'https://images.pexels.com/photos/220201/pexels-photo-220201.jpeg?auto=compress&cs=tinysrgb&w=600',
       color: 'white',
       url: ''
