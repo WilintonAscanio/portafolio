@@ -25,13 +25,11 @@ const SocialNetworks = ({ isDark }) => {
                 <div className={isDark ? 'socialNetworks socialDarks' : 'socialNetworks'}>
                     <a href='https://www.linkedin.com/in/wilintonascanio/' target='_blank'><BsLinkedin /></a>
                     <a href='https://github.com/WilintonAscanio' target='_blank'><BsGithub /></a>
-                    <a href='https://www.instagram.com/wilintonascanio12/' target='_blank'><AiFillInstagram /></a>
                     <a href='mailto:wilintonascanio12@hotmail.com' target='_blank'><MdEmail /></a>
                 </div> :
                 <footer className='footer'>
                     <a href='https://www.linkedin.com/in/wilintonascanio/' target='_blank'><BsLinkedin /></a>
                     <a href='https://github.com/WilintonAscanio' target='_blank'><BsGithub /></a>
-                    <a href='https://www.instagram.com/wilintonascanio12/' target='_blank'><AiFillInstagram /></a>
                     <a href='mailto:wilintonascanio12@hotmail.com' target='_blank'><MdEmail /></a>
                 </footer>}
 
