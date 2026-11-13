@@ -120,18 +120,24 @@ h3 { font-size: 22px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02
 
 /* covers */
 .cover { position: relative; aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; }
-.cover__in { position: relative; width: 100%; height: 100%; display: grid; place-items: center; }
+.cover__in { position: relative; width: 100%; height: 100%; display: grid; place-items: center; container-type: inline-size; }
 .shot { border-radius: 10px; overflow: hidden; background: #fff; box-shadow: 0 24px 50px -18px rgb(0 0 0 / 0.45); }
-.phone { border-radius: 22px; background: var(--ink); padding: 5px; box-shadow: 0 24px 50px -16px rgb(0 0 0 / 0.5); }
-.phone > * { border-radius: 17px; overflow: hidden; }
+/* A phone's bezel and corners scale with its width (--pw, % of the cover), so a small phone still reads as a handset. */
+.phone { --pw: 22; position: absolute; width: calc(var(--pw) * 1%); padding: calc(var(--pw) * 0.028cqw); border-radius: calc(var(--pw) * 0.15cqw); background: #0b0d12; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.16), 0 24px 50px -16px rgb(0 0 0 / 0.5); }
+.phone > * { border-radius: calc(var(--pw) * 0.124cqw); overflow: hidden; }
+/* Caelum's live demo draws its own handset. */
+.phone--live { padding: 0; background: none; box-shadow: 0 24px 50px -16px rgb(0 0 0 / 0.5); }
+.phone--live > iframe { display: block; width: 100%; aspect-ratio: 340 / 720; border: 0; border-radius: inherit; pointer-events: none; }
+/* Browser, screen and phone sit centred top to bottom, whatever the cover's shape. */
+.browser, .cover--landing .phone, .cover--app:is(.cover--yavi, .cover--despachao) :is(.shot, .phone) { top: 0; bottom: 0; margin-block: auto; height: fit-content; }
 .cover--caelum { background: #0e1630; }
 .cover--app.cover--caelum .shot { position: absolute; width: 66%; left: 6%; top: 9%; }
 .cover--app.cover--caelum .shot--front { left: auto; top: auto; right: 6%; bottom: 9%; width: 60%; }
 .cover--yavi { background: #f5a300; }
 .cover--despachao { background: #18181b; }
 /* app view of Yavi and Despachao: the office screen, the phone in front of its right edge */
-.cover--app:is(.cover--yavi, .cover--despachao) .shot { position: absolute; width: 72%; left: 6%; top: 12%; }
-.cover--app:is(.cover--yavi, .cover--despachao) .phone { position: absolute; width: 26%; right: 6%; top: 8%; }
+.cover--app:is(.cover--yavi, .cover--despachao) .shot { position: absolute; width: 70%; left: 6%; }
+.cover--app:is(.cover--yavi, .cover--despachao) .phone { --pw: 24; right: 6%; }
 .shot img, .phone img { display: block; width: 100%; height: auto; }
 .cover--prolibu { background: var(--night); }
 .cover--trading { background: var(--night); }
@@ -143,15 +149,14 @@ h3 { font-size: 22px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02
 .k-strategy { background: #3ccf8e; } .k-hold { background: #aeb3bc; }
 .stage--compact .trade__hud { display: none; }
 /* landing covers: the real site in a browser frame, its phone view in front */
-.browser { position: absolute; left: 7%; top: 13%; width: 76%; border-radius: 9px; overflow: hidden; background: #fff; box-shadow: 0 24px 50px -18px rgb(0 0 0 / 0.45); }
+.browser { position: absolute; left: 6%; width: 74%; border-radius: 9px; overflow: hidden; background: #fff; box-shadow: 0 24px 50px -18px rgb(0 0 0 / 0.45); }
 .browser__bar { display: flex; gap: 5px; padding: 7px 9px; background: #f1f1ee; border-bottom: 1px solid var(--line); }
 .browser__bar i { width: 7px; height: 7px; border-radius: 50%; background: #cfd0cc; }
 .browser img { display: block; width: 100%; height: auto; }
-.cover--landing .phone { position: absolute; right: 6%; top: 20%; width: 22%; }
-.cover--landing .phone img { display: block; width: 100%; height: auto; }
+.cover--landing .phone { right: 5%; }
 .cover--calculators { background: #f2c200; }
-.cover--large.cover--landing .browser { left: 8%; top: 9%; width: 62%; }
-.cover--large.cover--landing .phone { right: 9%; top: 13%; width: 17%; }
+.cover--large.cover--landing .browser { left: 8%; width: 64%; }
+.cover--large.cover--landing .phone { --pw: 17; right: 8%; }
 .preview__inside { margin-top: 40px; }
 .preview__inside h3 { font: 600 14px var(--font-ui); color: var(--mute); letter-spacing: 0; }
 .preview__inside .cover--large { margin-top: 12px; }
@@ -264,8 +269,8 @@ h3 { font-size: 22px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02
 .preview__body { padding: 36px 40px 56px; }
 .preview__headline { font-size: clamp(30px, 3.4vw, 44px); line-height: 1.05; font-weight: 700; max-width: 22ch; }
 .cover--large { aspect-ratio: 16 / 8; margin-top: 32px; }
-.cover--large.cover--app:is(.cover--yavi, .cover--despachao) .shot { width: 64%; left: 8%; top: 10%; }
-.cover--large.cover--app:is(.cover--yavi, .cover--despachao) .phone { width: 20%; right: 8%; top: 7%; }
+.cover--large.cover--app:is(.cover--yavi, .cover--despachao) .shot { width: 64%; left: 8%; }
+.cover--large.cover--app:is(.cover--yavi, .cover--despachao) .phone { --pw: 19; right: 8%; }
 .cover--large.cover--app.cover--caelum .shot { width: 60%; left: 8%; top: 8%; }
 .cover--large.cover--app.cover--caelum .shot--front { left: auto; top: auto; right: 8%; bottom: 8%; width: 54%; }
 .preview__cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 40px; }
@@ -288,8 +293,6 @@ h3 { font-size: 22px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02
   .stage { height: 380px; }
   .stage--fill { height: auto; }
   .stats { grid-template-columns: 1fr; }
-  .cover--large.cover--app:is(.cover--yavi, .cover--despachao) .shot { width: 68%; left: 5%; }
-  .cover--large.cover--app:is(.cover--yavi, .cover--despachao) .phone { width: 28%; right: 5%; }
   .stats > div, .stats > div + div { padding: 18px 0; border-left: 0; border-top: 1px solid var(--line); }
   .stats > div:first-child { border-top: 0; }
   .stats strong { font-size: 56px; }
@@ -319,7 +322,12 @@ h3 { font-size: 22px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02
   .preview__sheet { border-radius: 0; }
   .preview__bar { padding: 14px 76px 14px 20px; }
   .preview__body { padding: 24px 20px 48px; }
-  .cover--large { aspect-ratio: 4 / 3; }
+  /* Narrow previews: a taller cover and the card's proportions, so nothing floats in empty space. */
+  .cover--large { aspect-ratio: 16 / 11; }
+  .cover--large.cover--landing .browser { left: 5%; width: 72%; }
+  .cover--large.cover--landing .phone { --pw: 24; right: 4%; }
+  .cover--large.cover--app:is(.cover--yavi, .cover--despachao) .shot { left: 5%; width: 68%; }
+  .cover--large.cover--app:is(.cover--yavi, .cover--despachao) .phone { --pw: 27; right: 4%; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }

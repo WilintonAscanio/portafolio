@@ -12,7 +12,6 @@ import despachaoDesktop from '../assets/projects/despachao-desktop.png';
 import despachaoPhone from '../assets/projects/despachao-phone.png';
 // Caelum shows the product itself: the online menu and a customer ordering on the phone.
 import caelumMenuDesktop from '../assets/projects/caelum-menu-desktop.png';
-import caelumOrderPhone from '../assets/projects/caelum-order-phone.png';
 import yaviLandingDesktop from '../assets/projects/landing-yavi-desktop.png';
 import yaviLandingMobile from '../assets/projects/landing-yavi-mobile.png';
 import despachaoLandingDesktop from '../assets/projects/landing-despachao-desktop.png';
@@ -25,8 +24,9 @@ import TradingStage from './TradingStage.astro';
 interface Props { project: Project; lang: Lang; large?: boolean; view?: 'landing' | 'app' }
 const { project, lang, large = false, view = 'landing' } = Astro.props;
 
-const landings: Record<string, { desktop: ImageMetadata; mobile: ImageMetadata }> = {
-  caelum: { desktop: caelumMenuDesktop, mobile: caelumOrderPhone },
+const landings: Record<string, { desktop: ImageMetadata; mobile?: ImageMetadata }> = {
+  // No still phone: Caelum's phone is its live order demo.
+  caelum: { desktop: caelumMenuDesktop },
   yavi: { desktop: yaviLandingDesktop, mobile: yaviLandingMobile },
   despachao: { desktop: despachaoLandingDesktop, mobile: despachaoLandingMobile },
   calculators: { desktop: calculatorsLandingDesktop, mobile: calculatorsLandingMobile },
@@ -52,7 +52,12 @@ const phoneSizes = large ? '300px' : '(max-width: 900px) 30vw, 120px';
           <div class="browser__bar" aria-hidden="true"><i></i><i></i><i></i></div>
           <Image src={landing.desktop} alt="" widths={widths} sizes={sizes} format="webp" loading={loading} />
         </div>
-        <div class="phone"><Image src={landing.mobile} alt="" widths={phoneWidths} sizes={phoneSizes} format="webp" loading={loading} /></div>
+        {!landing.mobile ? (
+          // The same live order demo as Caelum's site: the phone plays a customer's order.
+          <div class="phone phone--live"><iframe src="/demos/caelum-order/index.html" title="Un cliente pide en la carta en línea de Caelum" loading="lazy" tabindex="-1" aria-hidden="true"></iframe></div>
+        ) : (
+          <div class="phone"><Image src={landing.mobile} alt="" widths={phoneWidths} sizes={phoneSizes} format="webp" loading={loading} /></div>
+        )}
       </>
     ) : (
       <>

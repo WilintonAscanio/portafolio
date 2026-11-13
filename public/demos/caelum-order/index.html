@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cómo pide tu cliente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: a website section; a live phone on the left plays a customer's order in Caelum colors, the four steps on the right follow it.
+   Single light theme on purpose: the website is light. Colors are the caelum-brand tokens. */
+:root {
+  --page: #F5F6F9; --surface: #FFFFFF; --sunken: #F0F2F6; --line: #E3E5EC; --ink: #0B1030; --muted: #545B64; --subtle: #646B7E;
+  --action: #1D74AE; --action-soft: #EEF5FB; --electric: #2D9CDB; --cyan: #3AC5E3; --lumen: #7EF2FF; --indigo: #4A47A3; --sky: #0D1B3E;
+  --ok: #14753A; --ok-soft: #E7F6EC; --warn: #9A4A07; --warn-soft: #FDF3E1;
+  --sans: "Inter Tight", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --spring: cubic-bezier(.34, 1.4, .5, 1); --ease: cubic-bezier(.45, 0, .2, 1); --out: cubic-bezier(.2, .8, .2, 1);
+  color-scheme: light;
+}
+* { box-sizing: border-box }
+html, body { margin: 0 }
+body { background: var(--surface); color: var(--ink); font: 16px/1.55 var(--sans) }
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: 24px }
+.note { padding-block: 36px 22px; color: var(--muted); max-width: 74ch }
+.note b { color: var(--ink) }
+.section { background: var(--page); border-block: 1px solid var(--line); padding-block: 60px; overflow: hidden }
+.grid { display: grid; grid-template-columns: 380px minmax(0, 1fr); gap: 64px; align-items: center }
+small.eyebrow { display: block; font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--muted); margin-bottom: 10px }
+h2 { font-size: clamp(30px, 4vw, 46px); line-height: 1.04; letter-spacing: -0.03em; margin: 0 0 14px; text-wrap: balance }
+.lead { margin: 0 0 30px; color: var(--muted); font-size: 18px; max-width: 46ch }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; counter-reset: step }
+.steps li { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 16px; align-items: start; padding: 16px 18px; border-radius: 14px; border: 1px solid transparent; transition: background 300ms, border-color 300ms, box-shadow 300ms }
+.steps li::before { counter-increment: step; content: counter(step); width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: 600 15px var(--mono); color: var(--subtle); background: var(--surface); border: 1px solid var(--line); transition: all 300ms }
+.steps li.is-on { background: var(--surface); border-color: var(--line); box-shadow: 0 16px 40px -28px rgba(13,27,62,.4) }
+.steps li.is-on::before { color: #fff; background: var(--action); border-color: var(--action) }
+.steps li.is-done::before { content: "✓"; color: var(--ok); border-color: #BFE3CB }
+.steps b { display: block; font-size: 18px; margin-bottom: 2px }
+.steps span { color: var(--muted); font-size: 15px }
+.foot { margin-top: 22px; font-size: 13px; color: var(--subtle) }
+
+/* ================= The phone ================= */
+.device { width: 340px; height: 720px; justify-self: center; position: relative }
+.phone { position: absolute; inset: 0; border-radius: 52px; background: var(--sky); padding: 12px; box-shadow: 0 50px 80px -40px rgba(13,27,62,.55), inset 0 0 0 2px #22305A }
+.screen { position: relative; width: 100%; height: 100%; border-radius: 41px; overflow: hidden; background: var(--page); font-size: 13px; line-height: 1.35 }
+.island { position: absolute; top: 10px; left: 50%; width: 92px; height: 26px; margin-left: -46px; border-radius: 20px; background: #050913; z-index: 50 }
+.view { position: absolute; inset: 0; transition: transform 520ms var(--ease), opacity 420ms var(--ease) }
+
+/* The menu */
+.cover { position: relative; height: 168px; overflow: hidden; background: var(--sky) url(img/portada.jpg) center 60% / cover }
+/* The brand's blue over the grill: deep at the top, where the phone's bar sits, clear toward the food */
+.cover::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(13,27,62,.92) 0%, rgba(74,71,163,.55) 45%, rgba(45,156,219,.15) 100%) }
+.cover span { position: absolute; left: 18px; top: 46px; z-index: 1; color: #fff; font-weight: 600; font-size: 12px; letter-spacing: .04em; display: flex; align-items: center; gap: 6px }
+.cover span em { font-style: normal; color: var(--lumen) }
+.cover i { position: absolute; z-index: 1; width: 3px; height: 3px; border-radius: 50%; background: var(--lumen); animation: twinkle 2.6s ease-in-out infinite }
+@keyframes twinkle { 50% { opacity: .2; transform: scale(.5) } }
+.biz { position: relative; margin: -40px 14px 0; padding: 12px; background: var(--surface); border-radius: 18px; box-shadow: 0 14px 30px -20px rgba(13,27,62,.5); display: flex; gap: 12px; align-items: center; z-index: 2 }
+.logo { width: 58px; height: 58px; border-radius: 16px; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--line); flex: none }
+.logo img { width: 46px; height: 50px }
+.wordmark { display: block; height: 15px; margin: 2px 0 6px }
+.biz b { display: block; font-size: 16px }
+.open { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: var(--ok) }
+.open::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #22C55E; box-shadow: 0 0 0 0 rgba(34,197,94,.6); animation: live 1.8s infinite }
+@keyframes live { 70% { box-shadow: 0 0 0 7px rgba(34,197,94,0) } }
+.fee { display: block; font-size: 11px; color: var(--muted); margin-top: 1px }
+.chips { position: relative; display: flex; gap: 6px; padding: 14px 14px 8px; z-index: 2 }
+.chip { position: relative; z-index: 1; font-weight: 600; font-size: 12px; color: var(--muted); padding: 7px 12px; border-radius: 999px; transition: color 300ms }
+.chip.is-on { color: #fff }
+.chips__pill { position: absolute; top: 14px; height: 31px; border-radius: 999px; background: var(--action); transition: left 420ms var(--spring), width 420ms var(--spring) }
+.menu { position: absolute; left: 0; right: 0; top: 272px; bottom: 0; overflow: hidden }
+.menu__track { transition: transform 700ms var(--ease) }
+.menu h4 { margin: 10px 14px 8px; font-size: 14px; display: flex; justify-content: space-between }
+.menu h4 span { font-weight: 500; color: var(--subtle); font-size: 12px }
+.dishes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 14px 6px }
+.dish { position: relative; background: var(--surface); border-radius: 16px; overflow: hidden; box-shadow: 0 8px 20px -16px rgba(13,27,62,.5); transition: transform 300ms var(--spring) }
+.dish.is-bump { transform: scale(.96) }
+.dish img { display: block; width: 100%; height: 92px; object-fit: cover }
+.dish div { padding: 8px 10px 10px }
+.dish b { display: block; font-size: 14px }
+.dish span { font-size: 12px; color: var(--muted) }
+.add { position: absolute; top: 64px; right: 8px; width: 34px; height: 34px; border-radius: 12px; border: 0; background: var(--action); color: #fff; font: 600 20px/34px var(--sans); text-align: center; box-shadow: 0 8px 16px -8px rgba(29,116,174,.8); transition: transform 300ms var(--spring), background 300ms }
+.add.has { background: var(--sky); font-size: 14px }
+.add.pop { animation: pop 420ms var(--spring) }
+@keyframes pop { 40% { transform: scale(1.3) } }
+.cartbar { position: absolute; left: 12px; right: 12px; bottom: 14px; height: 54px; border-radius: 18px; background: linear-gradient(120deg, var(--sky), var(--indigo)); color: #fff; display: flex; align-items: center; gap: 10px; padding: 0 14px; transform: translateY(90px); transition: transform 520ms var(--spring); z-index: 5; box-shadow: 0 16px 30px -16px rgba(13,27,62,.8) }
+.cartbar.is-up { transform: none }
+.cartbar__n { width: 28px; height: 28px; border-radius: 9px; background: var(--cyan); color: var(--sky); font-weight: 700; display: grid; place-items: center }
+.cartbar__n.pop { animation: pop 420ms var(--spring) }
+.cartbar b { font-size: 14px }
+.cartbar span:last-child { margin-left: auto; font-weight: 700; font-variant-numeric: tabular-nums }
+.fly { position: absolute; z-index: 30; width: 44px; height: 44px; border-radius: 50%; object-fit: cover; box-shadow: 0 10px 20px -8px rgba(13,27,62,.6); pointer-events: none; transition: transform 700ms cubic-bezier(.5, -0.3, .6, 1), opacity 300ms 500ms }
+
+/* The dish sheet */
+.scrim { position: absolute; inset: 0; background: rgba(13,27,62,.45); opacity: 0; transition: opacity 360ms; z-index: 8; pointer-events: none }
+.scrim.is-on { opacity: 1 }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; height: 520px; background: var(--surface); border-radius: 28px 28px 0 0; z-index: 9; transform: translateY(105%); transition: transform 560ms var(--spring); overflow: hidden }
+.sheet.is-up { transform: none }
+.sheet img { width: 100%; height: 210px; object-fit: cover; transform: scale(1.15); transition: transform 1600ms var(--out) }
+.sheet.is-up img { transform: scale(1) }
+.sheet__body { padding: 16px 18px; display: grid; gap: 8px }
+.sheet h3 { margin: 0; font-size: 20px; letter-spacing: -0.01em }
+.sheet .price { color: var(--action); font-weight: 700; font-size: 16px }
+.sheet label { font-size: 12px; font-weight: 600; margin-top: 6px }
+.field { min-height: 44px; border: 1.5px solid var(--line); border-radius: 12px; padding: 11px 12px; color: var(--ink); background: var(--sunken); transition: border-color 300ms, background 300ms, box-shadow 300ms }
+.field.is-focus { border-color: var(--action); background: var(--surface); box-shadow: 0 0 0 4px var(--action-soft) }
+.field:empty::before { content: attr(data-ph); color: var(--subtle) }
+.field.is-focus::after { content: ""; display: inline-block; width: 1.5px; height: 15px; margin-left: 1px; vertical-align: -2px; background: var(--action); animation: caret 900ms steps(2) infinite }
+@keyframes caret { 50% { opacity: 0 } }
+.sheet__foot { position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 18px 22px; display: flex; gap: 10px; border-top: 1px solid var(--line); background: var(--surface) }
+.qty { display: flex; align-items: center; gap: 14px; padding: 0 14px; border: 1px solid var(--line); border-radius: 14px; font-weight: 600 }
+.cta { flex: 1; height: 48px; border-radius: 14px; border: 0; background: linear-gradient(120deg, var(--action), var(--electric)); color: #fff; font: 700 14px var(--sans); display: grid; place-items: center; transition: transform 200ms var(--spring) }
+.pressed { transform: scale(.94) !important }
+
+/* The cart page */
+.page { background: var(--page); transform: translateX(100%) }
+.page.is-in { transform: none }
+.view.is-left { transform: translateX(-30%); opacity: .6 }
+.bar { height: 64px; padding: 26px 16px 0; display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px }
+.back { width: 30px; height: 30px; border-radius: 10px; border: 1px solid var(--line); display: grid; place-items: center; background: var(--surface) }
+.card { margin: 10px 14px; padding: 12px; background: var(--surface); border-radius: 16px; box-shadow: 0 8px 20px -18px rgba(13,27,62,.5) }
+.line { display: flex; align-items: center; gap: 10px; padding: 6px 0; opacity: 0; transform: translateY(10px); transition: all 420ms var(--out) }
+.is-in .line { opacity: 1; transform: none }
+.line img { width: 40px; height: 40px; border-radius: 10px; object-fit: cover }
+.line b { display: block; font-size: 13px }
+.line small { color: var(--warn); background: var(--warn-soft); padding: 1px 6px; border-radius: 6px; font-size: 11px; font-weight: 600 }
+.line > div { flex: 1; min-width: 0 }
+.line span:last-child { margin-left: auto; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap }
+.sum { display: grid; gap: 3px; font-size: 12px; color: var(--muted) }
+.sum div { display: flex; justify-content: space-between }
+.sum .total { color: var(--ink); font-weight: 700; font-size: 15px; padding-top: 4px; border-top: 1px solid var(--line); margin-top: 3px }
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px }
+.seg span { text-align: center; padding: 8px; border-radius: 10px; border: 1px solid var(--line); font-weight: 600; font-size: 12px; color: var(--muted) }
+.seg .on { background: var(--action-soft); border-color: var(--action); color: var(--action) }
+.form { display: grid; gap: 7px }
+.form .field { min-height: 38px; padding: 9px 11px; font-size: 12px }
+.confirm { position: absolute; left: 14px; right: 14px; bottom: 16px; height: 52px; border-radius: 16px; border: 0; background: linear-gradient(120deg, var(--action), var(--electric)); color: #fff; font: 700 14px var(--sans); display: flex; align-items: center; justify-content: center; gap: 10px; transition: transform 200ms var(--spring), width 400ms var(--ease) }
+.spin { width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid rgba(255,255,255,.35); border-top-color: #fff; animation: spin 700ms linear infinite; display: none }
+.confirm.is-busy .spin { display: block }
+.confirm.is-busy .txt { display: none }
+@keyframes spin { to { transform: rotate(360deg) } }
+
+/* Received */
+.done { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; align-content: center; gap: 10px; text-align: center; background: radial-gradient(circle at 50% 38%, var(--surface) 0%, var(--page) 70%); opacity: 0; pointer-events: none; transition: opacity 400ms }
+.done.is-on { opacity: 1 }
+.badge { width: 86px; height: 86px; border-radius: 50%; background: linear-gradient(135deg, #22C55E, var(--ok)); display: grid; place-items: center; transform: scale(0); transition: transform 600ms var(--spring) 120ms; box-shadow: 0 18px 30px -14px rgba(20,117,58,.7) }
+.done.is-on .badge { transform: scale(1) }
+.badge svg { stroke-dasharray: 30; stroke-dashoffset: 30; transition: stroke-dashoffset 500ms var(--out) 500ms }
+.done.is-on .badge svg { stroke-dashoffset: 0 }
+.done h3 { margin: 6px 0 0; font-size: 22px }
+.done p { margin: 0; color: var(--muted) }
+.code { font: 600 18px var(--mono); letter-spacing: .2em; color: var(--action); background: var(--action-soft); padding: 8px 14px; border-radius: 12px }
+.star { position: absolute; width: 10px; height: 10px; pointer-events: none; z-index: 25 }
+.star::before { content: ""; position: absolute; inset: 0; background: currentColor; clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%) }
+
+/* Tracking */
+.track { background: var(--page); transform: translateX(100%) }
+.track.is-in { transform: none }
+.track__head { height: 196px; padding: 50px 20px 0; color: #fff; background: linear-gradient(135deg, var(--sky), var(--indigo) 70%, var(--electric) 130%); position: relative; overflow: hidden }
+.track__head small { color: var(--lumen); font-weight: 600; letter-spacing: .08em; font-size: 10px }
+.track__brand { position: absolute; top: 42px; right: 16px; width: 44px; height: 48px }
+.done .brand { height: 14px; margin-top: 6px; opacity: .85 }
+.track__head b { display: block; font-size: 24px; letter-spacing: -0.01em }
+.eta { margin-top: 6px; font-size: 13px; color: #CFE6FF }
+.eta strong { font-variant-numeric: tabular-nums; color: #fff }
+.road { position: absolute; left: 20px; right: 20px; bottom: 26px; height: 30px }
+.road::before { content: ""; position: absolute; left: 0; right: 0; top: 15px; border-top: 2px dashed rgba(126,242,255,.45) }
+.road i { position: absolute; top: 3px; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); color: var(--action) }
+.road .home { right: -2px; color: var(--ok) }
+.road .bike { left: 0; transition: left 2400ms var(--ease); background: var(--cyan); color: var(--sky) }
+.steps-app { margin: -18px 14px 0; position: relative; padding: 16px; background: var(--surface); border-radius: 18px; box-shadow: 0 14px 30px -20px rgba(13,27,62,.5) }
+.st { position: relative; display: flex; gap: 12px; align-items: center; padding: 9px 0; color: var(--subtle); font-weight: 600; transition: color 300ms }
+.st + .st::before { content: ""; position: absolute; left: 13px; top: -14px; width: 2px; height: 22px; background: var(--line) }
+.st + .st::after { content: ""; position: absolute; left: 13px; top: -14px; width: 2px; height: 0; background: var(--ok); transition: height 500ms var(--ease) }
+.st.is-done + .st::after, .st.is-done + .st.is-done::after { height: 22px }
+.st i { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; flex: none; background: var(--surface); transition: all 400ms var(--spring) }
+.st.is-now { color: var(--ink) }
+.st.is-now i { border-color: var(--action); box-shadow: 0 0 0 5px var(--action-soft); transform: scale(1.08) }
+.st.is-done { color: var(--ink) }
+.st.is-done i { border-color: var(--ok); background: var(--ok); color: #fff }
+.st em { margin-left: auto; font-style: normal; font-size: 11px; color: var(--subtle); font-weight: 500; font-variant-numeric: tabular-nums }
+.steam { display: inline-block; animation: steam 1.4s ease-in-out infinite }
+@keyframes steam { 50% { transform: translateY(-2px) rotate(-6deg) } }
+
+/* The finger */
+.finger { position: absolute; left: 0; top: 0; z-index: 60; width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%; background: rgba(13,27,62,.22); border: 2.5px solid rgba(255,255,255,.95); box-shadow: 0 6px 14px rgba(13,27,62,.25); transition: transform 620ms var(--ease), opacity 300ms; opacity: 0; pointer-events: none }
+.finger.is-down { width: 34px; height: 34px; margin: -17px 0 0 -17px }
+.ripple { position: absolute; z-index: 59; width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%; border: 2px solid var(--cyan); animation: ripple 600ms var(--out) forwards; pointer-events: none }
+@keyframes ripple { from { transform: scale(.4); opacity: .9 } to { transform: scale(2.2); opacity: 0 } }
+
+@media (max-width: 860px) { .grid { grid-template-columns: minmax(0, 1fr); gap: 36px } }
+@media (max-width: 400px) { .device { transform: scale(.86); transform-origin: top center; margin-bottom: -100px } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important } }
+</style>
+<style>
+/* Embedded in the portfolio: only the phone, scaled to the frame's width. */
+html, body { background: transparent; overflow: hidden }
+.note, .grid > :not(.device) { display: none !important }
+.section { padding: 0; background: none; border: 0; overflow: visible }
+.wrap { padding: 0; max-width: none }
+.grid { display: block }
+.device { margin: 0; justify-self: start; transform-origin: 0 0; transform: scale(var(--k, 1)) }
+.phone { box-shadow: none }
+</style>
+<script>
+const fit = () => document.documentElement.style.setProperty('--k', innerWidth / 340);
+fit(); addEventListener('resize', fit);
+</script>
+</head>
+<body>
+<div class="wrap note"><b>Con la marca de CAELUM.</b> Ya no son capturas: es la carta en línea dibujada en vivo, con el logo y el logotipo de CAELUM, con la misma estructura de la app y animación dentro de la interfaz. El + se vuelve contador, el plato vuela al carrito, la nota se escribe, al confirmar salen estrellas y el repartidor avanza hasta la casa. Pesa unos 150 KB y el texto se ve nítido.</div>
+<section class="section">
+  <div class="wrap grid">
+    <div class="device" aria-label="Un cliente pide dos hamburguesas en la carta en línea de CAELUM y sigue su pedido hasta que llega" role="img">
+      <div class="phone"><div class="screen" id="screen">
+        <div class="island"></div>
+
+        <div class="view" id="menuView">
+          <div class="cover" id="cover"><span>Cocina a la parrilla <em>·</em> Valledupar</span></div>
+          <div class="biz"><span class="logo"><img src="brand/caelum-mark.svg" alt=""></span><div><img class="wordmark" src="brand/caelum-wordmark.svg" alt="CAELUM"><span class="open">Abierto · 30–60 min</span><span class="fee">Domicilio $ 4.000</span></div></div>
+          <div class="chips" id="chips"><span class="chips__pill" id="pill"></span><span class="chip is-on" data-cat="0">Entradas</span><span class="chip" data-cat="1" id="chipBurgers">Hamburguesas</span><span class="chip" data-cat="2">Bebidas</span></div>
+          <div class="menu"><div class="menu__track" id="track">
+            <h4>Entradas <span>2</span></h4>
+            <div class="dishes"><div class="dish"><img src="img/empanadas.jpg" alt=""><button class="add" tabindex="-1">+</button><div><b>$ 8.500</b><span>Empanadas de carne</span></div></div><div class="dish"><img src="img/patacones.jpg" alt=""><button class="add" tabindex="-1">+</button><div><b>$ 9.500</b><span>Patacones con hogao</span></div></div></div>
+            <h4 id="burgersHead">Hamburguesas <span>2</span></h4>
+            <div class="dishes"><div class="dish" id="dCasa"><img src="img/hamburguesa.jpg" alt=""><button class="add" id="addCasa" tabindex="-1">+</button><div><b>$ 26.000</b><span>Hamburguesa de la casa</span></div></div><div class="dish" id="dDoble"><img src="img/hamburguesa-doble.jpg" alt=""><button class="add" id="addDoble" tabindex="-1">+</button><div><b>$ 31.000</b><span>Hamburguesa doble queso</span></div></div></div>
+            <h4>Bebidas <span>2</span></h4>
+            <div class="dishes"><div class="dish"><img src="img/limonada-coco.jpg" alt=""><button class="add" tabindex="-1">+</button><div><b>$ 11.000</b><span>Limonada de coco</span></div></div><div class="dish"><img src="img/jugo-lulo.jpg" alt=""><button class="add" tabindex="-1">+</button><div><b>$ 8.000</b><span>Jugo de lulo</span></div></div></div>
+          </div></div>
+          <div class="cartbar" id="cartbar"><span class="cartbar__n" id="cartN">1</span><b>Ver pedido</b><span id="cartTotal">$ 0</span></div>
+        </div>
+
+        <div class="scrim" id="scrim"></div>
+        <div class="sheet" id="sheet">
+          <img id="sheetImg" src="img/hamburguesa.jpg" alt="">
+          <div class="sheet__body"><h3 id="sheetName">Hamburguesa de la casa</h3><span class="price" id="sheetPrice">$ 26.000</span><label>Nota para la cocina <span style="font-weight:400;color:var(--subtle)">(opcional)</span></label><div class="field" id="noteField" data-ph="Sin cebolla, término medio…"></div></div>
+          <div class="sheet__foot"><span class="qty">−<span>1</span>+</span><span class="cta" id="sheetAdd">Agregar · $ 26.000</span></div>
+        </div>
+
+        <div class="view page" id="cartView">
+          <div class="bar"><span class="back">‹</span>Tu pedido</div>
+          <div class="card">
+            <div class="line" style="transition-delay:120ms"><img src="img/hamburguesa.jpg" alt=""><div><b>Hamburguesa de la casa</b><small>Sin cebolla</small></div><span>$ 26.000</span></div>
+            <div class="line" style="transition-delay:240ms"><img src="img/hamburguesa-doble.jpg" alt=""><div><b>Hamburguesa doble queso</b></div><span>$ 31.000</span></div>
+          </div>
+          <div class="card sum"><div><span>Subtotal</span><span>$ 57.000</span></div><div><span>Domicilio</span><span>$ 4.000</span></div><div class="total"><span>Total</span><span id="sumTotal">$ 61.000</span></div></div>
+          <div class="card"><div class="seg"><span class="on">A domicilio</span><span>Recojo en el local</span></div>
+            <div class="form"><div class="field" id="fName" data-ph="Nombre"></div><div class="field" id="fPhone" data-ph="Teléfono / celular"></div><div class="field" id="fAddr" data-ph="Dirección de entrega"></div><div class="seg" style="margin:2px 0 0"><span class="on">Efectivo</span><span>Transferencia</span></div></div></div>
+          <button class="confirm" id="confirm" tabindex="-1"><span class="txt">Confirmar pedido · $ 61.000</span><span class="spin"></span></button>
+        </div>
+
+        <div class="done" id="done">
+          <span class="badge"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+          <h3>¡Pedido recibido!</h3><p>Pedido DEL8 · llega en 30–60 min</p><span class="code">WQQZ9V</span><img class="brand" src="brand/caelum-wordmark.svg" alt="CAELUM">
+        </div>
+
+        <div class="view track" id="trackView">
+          <div class="track__head" id="trackHead"><img class="track__brand" src="brand/caelum-mark-on-dark.svg" alt=""><small>SIGUE TU PEDIDO</small><b>Orden DEL8</b><div class="eta">Llega en <strong id="eta">38 min</strong></div>
+            <div class="road"><i class="bike" id="bike"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg></i><i class="home"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></i></div>
+          </div>
+          <div class="steps-app" id="trackSteps">
+            <div class="st"><i>✓</i>Recibido<em>7:42 p. m.</em></div>
+            <div class="st"><i><span class="steam">♨</span></i>En la cocina<em></em></div>
+            <div class="st"><i>➜</i>En camino<em></em></div>
+            <div class="st"><i>⌂</i>Entregado<em></em></div>
+          </div>
+        </div>
+
+        <div class="finger" id="finger"></div>
+      </div></div>
+    </div>
+    <div>
+      <small class="eyebrow">CARTA EN LÍNEA</small>
+      <h2>Así pide tu cliente, desde su celular</h2>
+      <p class="lead">Tu carta con fotos, en tu propio enlace. Sin apps que instalar y sin comisiones por pedido.</p>
+      <ol class="steps" id="steps">
+        <li><div><b>Elige en tu carta</b><span>Con fotos, precios y categorías, como en tu local.</span></div></li>
+        <li><div><b>Deja la nota para la cocina</b><span>«Sin cebolla», «término medio»: viaja con el plato a la cocina.</span></div></li>
+        <li><div><b>Confirma con su dirección</b><span>Paga contra entrega o por transferencia, a domicilio o para recoger.</span></div></li>
+        <li><div><b>Sigue su pedido hasta la puerta</b><span>En la cocina, en camino y entregado, en vivo.</span></div></li>
+      </ol>
+      <p class="foot">Ilustración animada de la carta en línea de CAELUM.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const screen = $('screen'), finger = $('finger');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const wait = (ms) => new Promise((r) => setTimeout(r, reduce ? 0 : ms));
+const money = (v) => `$ ${Math.round(v).toLocaleString('es-CO').replace(/,/g, '.')}`;
+
+// Stars in the cover, like the brand's sky
+for (let i = 0; i < 22; i++) {
+  const s = document.createElement('i');
+  s.style.left = `${(i * 37) % 100}%`; s.style.top = `${(i * 53) % 85 + 5}%`; s.style.animationDelay = `${(i % 7) * 0.35}s`; s.style.opacity = 0.35 + (i % 4) * 0.15;
+  $('cover').appendChild(s);
+}
+
+/** Where an element sits inside the screen, in the screen's own pixels. */
+function spot(el) {
+  const s = screen.getBoundingClientRect(), r = el.getBoundingClientRect(), k = s.width / screen.offsetWidth;
+  return { x: (r.left + r.width / 2 - s.left) / k, y: (r.top + r.height / 2 - s.top) / k };
+}
+async function moveTo(el) { const p = spot(el); finger.style.opacity = 1; finger.style.transform = `translate(${p.x}px, ${p.y}px)`; await wait(680); return p; }
+async function tap(el) {
+  const p = await moveTo(el);
+  finger.classList.add('is-down'); el.classList.add('pressed');
+  const r = document.createElement('span'); r.className = 'ripple'; r.style.left = `${p.x}px`; r.style.top = `${p.y}px`; screen.appendChild(r);
+  await wait(160); finger.classList.remove('is-down'); el.classList.remove('pressed');
+  setTimeout(() => r.remove(), 700);
+}
+async function type(el, text) {
+  el.classList.add('is-focus');
+  for (const ch of text) { el.textContent += ch; await wait(70 + (ch === ' ' ? 60 : 0)); }
+  await wait(250); el.classList.remove('is-focus');
+}
+function count(el, from, to, ms = 600) {
+  const t0 = performance.now();
+  const step = (t) => { const k = Math.min(1, (t - t0) / ms); el.textContent = money(from + (to - from) * (1 - (1 - k) ** 3)); if (k < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+function placePill(chip) { const c = chip.getBoundingClientRect(), p = $('chips').getBoundingClientRect(), k = c.width / chip.offsetWidth; $('pill').style.left = `${(c.left - p.left) / k}px`; $('pill').style.width = `${chip.offsetWidth}px`; }
+function setStep(n) { document.querySelectorAll('#steps li').forEach((li, i) => { li.classList.toggle('is-on', i === n); li.classList.toggle('is-done', i < n); }); }
+function burst(x, y) {
+  const colors = ['#3AC5E3', '#2D9CDB', '#4A47A3', '#7EF2FF', '#1D74AE'];
+  for (let i = 0; i < 18; i++) {
+    const s = document.createElement('span'); s.className = 'star'; s.style.color = colors[i % colors.length];
+    s.style.left = `${x}px`; s.style.top = `${y}px`; screen.appendChild(s);
+    const a = (i / 18) * Math.PI * 2, d = 70 + (i % 3) * 30;
+    s.animate([{ transform: 'translate(0,0) scale(.2)', opacity: 1 }, { transform: `translate(${Math.cos(a) * d}px, ${Math.sin(a) * d}px) scale(${1 + (i % 2)}) rotate(${i * 40}deg)`, opacity: 0 }], { duration: 1100, easing: 'cubic-bezier(.2,.8,.2,1)' }).onfinish = () => s.remove();
+  }
+}
+async function addDish(dish, btn, total, n) {
+  // the photo flies to the cart
+  const img = dish.querySelector('img'), from = spot(img), to = spot($('cartbar').firstElementChild);
+  const f = document.createElement('img'); f.className = 'fly'; f.src = img.src; f.style.left = `${from.x - 22}px`; f.style.top = `${from.y - 22}px`; screen.appendChild(f);
+  requestAnimationFrame(() => { f.style.transform = `translate(${to.x - from.x}px, ${to.y - from.y + (n === 1 ? 90 : 0)}px) scale(.45)`; f.style.opacity = 0; });
+  btn.textContent = '1'; btn.classList.add('has', 'pop'); dish.classList.add('is-bump');
+  setTimeout(() => dish.classList.remove('is-bump'), 260);
+  $('cartbar').classList.add('is-up');
+  await wait(650); f.remove();
+  $('cartN').textContent = n; $('cartN').classList.remove('pop'); void $('cartN').offsetWidth; $('cartN').classList.add('pop');
+  count($('cartTotal'), n === 1 ? 0 : 26000, total);
+}
+async function sheet(dish, name, price, note) {
+  $('sheetImg').src = dish.querySelector('img').src; $('sheetName').textContent = name; $('sheetPrice').textContent = money(price); $('sheetAdd').textContent = `Agregar · ${money(price)}`;
+  $('noteField').textContent = '';
+  $('scrim').classList.add('is-on'); $('sheet').classList.add('is-up');
+  await wait(800);
+  if (note) { await tap($('noteField')); await type($('noteField'), note); await wait(200); }
+  await tap($('sheetAdd'));
+  $('sheet').classList.remove('is-up'); $('scrim').classList.remove('is-on');
+  await wait(380);
+}
+function reset() {
+  ['cartView', 'trackView'].forEach((id) => $(id).classList.remove('is-in'));
+  $('menuView').classList.remove('is-left'); $('cartView').classList.remove('is-left');
+  $('cartbar').classList.remove('is-up'); $('done').classList.remove('is-on');
+  $('track').style.transform = 'translateY(0)';
+  document.querySelectorAll('.add').forEach((b) => { b.textContent = '+'; b.classList.remove('has', 'pop'); });
+  document.querySelectorAll('.chip').forEach((c, i) => c.classList.toggle('is-on', i === 0));
+  placePill(document.querySelector('.chip'));
+  ['fName', 'fPhone', 'fAddr'].forEach((id) => ($(id).textContent = ''));
+  $('confirm').classList.remove('is-busy');
+  document.querySelectorAll('.st').forEach((s) => s.classList.remove('is-now', 'is-done'));
+  document.querySelectorAll('.st em').forEach((e, i) => i && (e.textContent = ''));
+  $('bike').style.left = '0%'; $('eta').textContent = '38 min';
+  finger.style.opacity = 0;
+}
+
+async function play() {
+  reset(); setStep(0);
+  await wait(900);
+  // 1. Pick from the menu
+  await tap($('chipBurgers'));
+  document.querySelectorAll('.chip').forEach((c) => c.classList.toggle('is-on', c === $('chipBurgers')));
+  placePill($('chipBurgers'));
+  $('track').style.transform = `translateY(${-($('burgersHead').offsetTop - 2)}px)`;
+  await wait(900);
+  await tap($('addCasa'));
+  // 2. The note for the kitchen
+  setStep(1);
+  await sheet($('dCasa'), 'Hamburguesa de la casa', 26000, 'Sin cebolla');
+  await addDish($('dCasa'), $('addCasa'), 26000, 1);
+  await wait(500);
+  await tap($('addDoble'));
+  await sheet($('dDoble'), 'Hamburguesa doble queso', 31000, '');
+  await addDish($('dDoble'), $('addDoble'), 57000, 2);
+  await wait(600);
+  // 3. Confirm with the address
+  await tap($('cartbar'));
+  setStep(2);
+  $('menuView').classList.add('is-left'); $('cartView').classList.add('is-in');
+  await wait(900);
+  for (const [id, text] of [['fName', 'Laura Gómez'], ['fPhone', '310 555 0123'], ['fAddr', 'Calle 16 # 9-42, Novalito']]) { await tap($(id)); await type($(id), text); }
+  await tap($('confirm'));
+  $('confirm').classList.add('is-busy');
+  await wait(900);
+  $('done').classList.add('is-on');
+  const b = spot(document.querySelector('.badge')); setTimeout(() => burst(b.x, b.y), 450);
+  finger.style.opacity = 0;
+  await wait(2000);
+  // 4. Follow it to the door
+  setStep(3);
+  $('cartView').classList.add('is-left'); $('trackView').classList.add('is-in'); $('done').classList.remove('is-on');
+  const st = [...document.querySelectorAll('.st')], times = ['', '7:44 p. m.', '8:05 p. m.', '8:21 p. m.'];
+  st[0].classList.add('is-done');
+  for (let i = 1; i < st.length; i++) {
+    await wait(i === 1 ? 900 : 1500);
+    st[i - 1].classList.remove('is-now'); st[i - 1].classList.add('is-done');
+    st[i].classList.add('is-now'); st[i].querySelector('em').textContent = times[i];
+    if (i === 2) { $('bike').style.left = 'calc(100% - 50px)'; $('eta').textContent = '16 min'; }
+    if (i === 3) { await wait(900); st[i].classList.remove('is-now'); st[i].classList.add('is-done'); $('eta').textContent = 'entregado'; const h = spot(document.querySelector('.road .home')); burst(h.x, h.y); }
+  }
+  await wait(2600);
+}
+async function loop() { for (;;) { await play(); if (reduce) break; } }
+document.fonts.ready.then(() => { placePill(document.querySelector('.chip')); loop(); });
+</script>
+</body>
+</html>
