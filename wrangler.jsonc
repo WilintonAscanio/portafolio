@@ -1,0 +1,15 @@
+// Static site on Cloudflare Workers: `npm run build`, then `npx wrangler deploy` uploads dist/.
+{
+  "name": "portafolio",
+  "compatibility_date": "2026-11-01",
+  // www is served too; pages declare the bare domain as canonical.
+  "routes": [
+    { "pattern": "wilintonascanio.com", "custom_domain": true },
+    { "pattern": "www.wilintonascanio.com", "custom_domain": true }
+  ],
+  "assets": {
+    "directory": "./dist",
+    // Serves /en from en.html (build.format = 'file').
+    "html_handling": "auto-trailing-slash"
+  }
+}

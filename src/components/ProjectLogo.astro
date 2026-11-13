@@ -1,0 +1,9 @@
+---
+import caelum from '../assets/logos/caelum.svg?url';
+import yavi from '../assets/logos/yavi.svg?url';
+import despachao from '../assets/logos/despachao.svg?url';
+interface Props { logo?: 'caelum' | 'yavi' | 'despachao'; size?: number }
+const { logo, size = 30 } = Astro.props;
+const src = logo && { caelum, yavi, despachao }[logo];
+---
+{src && <img class="logo" src={src} alt="" width={size} height={size} />}

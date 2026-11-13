@@ -1,0 +1,30 @@
+---
+// Stand-in for Despachao until real screenshots exist: the orders panel and the driver app, as HTML.
+interface Props { large?: boolean }
+const orders = [
+  ['Tienda La 14', 'Andrés P.', 'En ruta', 'route'],
+  ['Minimercado Sol', 'Andrés P.', 'Entregado', ''],
+  ['Droguería Central', 'Luisa M.', 'Parcial', 'partial'],
+  ['Panadería Real', 'Sin asignar', 'Alistando', ''],
+  ['Surtidor El Paisa', 'Luisa M.', 'En ruta', 'route'],
+  ['Granero San José', 'Andrés P.', 'Entregado', ''],
+];
+---
+<div class:list={['shot', 'app', { 'app--large': Astro.props.large }]} aria-hidden="true">
+  <div class="app__bar"><i></i>Pedidos de hoy</div>
+  <div class="app__row app__row--head"><span>Cliente</span><span>Conductor</span><span>Estado</span></div>
+  {orders.map(([client, driver, state, tone]) => (
+    <div class="app__row"><span>{client}</span><span>{driver}</span><span class:list={['pill', tone && `pill--${tone}`]}>{state}</span></div>
+  ))}
+</div>
+<div class="phone" aria-hidden="true">
+  <div class="driver">
+    <small>Parada 3 de 8</small>
+    <b>Droguería Central</b>
+    <div class="driver__photo"></div>
+    <div class="driver__opt">Entregado completo</div>
+    <div class="driver__opt is-on">Entrega parcial<span>2 de 5</span></div>
+    <div class="driver__opt">No entregado</div>
+    <div class="driver__cta">Confirmar entrega</div>
+  </div>
+</div>

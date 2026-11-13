@@ -1,0 +1,19 @@
+---
+import type { Lang } from '../i18n/ui';
+import type { Project } from '../data/projects';
+import ProjectCover from './ProjectCover.astro';
+import ProjectLogo from './ProjectLogo.astro';
+interface Props { project: Project; lang: Lang }
+const { project, lang } = Astro.props;
+---
+<button type="button" class="card" data-project={project.id} aria-haspopup="dialog">
+  <ProjectCover project={project} lang={lang} />
+  <span class="card__label">
+    <span class="card__head">
+      <ProjectLogo logo={project.logo} />
+      <span class="card__name">{project.name[lang]}</span>
+      <span class:list={['tag', `tag--${project.statusTone}`]}>{project.status[lang]}</span>
+    </span>
+    <span class="card__role">{project.role[lang]}</span>
+  </span>
+</button>

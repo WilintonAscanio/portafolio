@@ -1,0 +1,10 @@
+---
+import { useTranslations, type Lang } from '../i18n/ui';
+interface Props { lang: Lang }
+const t = useTranslations(Astro.props.lang);
+---
+<div class="stage stage--fill" data-effect="data" data-message={t('data.message')} role="img" aria-label={t('data.label')}>
+  <canvas></canvas>
+  <div class="bubble" aria-hidden="true"><small>{t('data.who')}</small><span data-typed></span></div>
+  <div class="cap" data-caption aria-hidden="true"><span>{t('data.chart')}</span><span>{t('data.pinned')}</span></div>
+</div>

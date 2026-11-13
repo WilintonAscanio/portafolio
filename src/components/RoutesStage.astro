@@ -1,0 +1,10 @@
+---
+import { useTranslations, type Lang } from '../i18n/ui';
+interface Props { lang: Lang }
+const t = useTranslations(Astro.props.lang);
+---
+<div class="stage" data-effect="routes" data-depot={t('routes.depot')} data-dispatch={t('routes.dispatchTo')} role="img" aria-label={t('routes.label')}>
+  <canvas></canvas>
+  <div class="chip" aria-hidden="true"><span>{t('routes.onRoute')} <b data-on-route>0</b></span><span>{t('routes.delivered')} <b data-delivered>0</b></span></div>
+  <p class="hint" aria-hidden="true">{t('routes.hint')}</p>
+</div>

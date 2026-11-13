@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/styles/global.css"
+        ],
+        "createdAt": "2026-11-13T01:55:56.525Z",
+        "reason": "Top yellow band of the profile card (full width, not a side tab); user approved this design in the mockup on 2026-11-12"
+      }
+    ]
+  }
+}

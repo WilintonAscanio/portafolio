@@ -1,0 +1,53 @@
+---
+import { useTranslations, type Lang } from '../i18n/ui';
+import type { Project } from '../data/projects';
+import ProjectCover from './ProjectCover.astro';
+import ProjectLogo from './ProjectLogo.astro';
+interface Props { projects: Project[]; lang: Lang }
+const { projects, lang } = Astro.props;
+const t = useTranslations(lang);
+// Projects with real in-app screens besides their landing.
+const hasApp = ['caelum', 'yavi', 'despachao'];
+---
+<dialog class="preview" data-preview aria-labelledby="preview-title">
+  <div class="preview__sheet" data-preview-sheet>
+    <div class="preview__close-rail">
+      <button type="button" class="preview__close" data-preview-close aria-label={t('preview.close')}>
+        <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+      </button>
+    </div>
+    <div data-preview-body></div>
+  </div>
+</dialog>
+
+{projects.map((p) => (
+  <template id={`preview-${p.id}`}>
+    <header class="preview__bar">
+      <ProjectLogo logo={p.logo} size={34} />
+      <h2 class="preview__name" id="preview-title">{p.name[lang]}</h2>
+      <span class:list={['tag', `tag--${p.statusTone}`]}>{p.status[lang]}</span>
+    </header>
+    <div class="preview__body">
+      <p class="preview__headline">{p.headline[lang]}</p>
+      <ProjectCover project={p} lang={lang} large />
+      <div class="preview__cols">
+        <div><h3>{t('preview.problem')}</h3><p>{p.problem[lang]}</p></div>
+        <div><h3>{t('preview.does')}</h3><ul>{p.does[lang].map((d) => <li>{d}</li>)}</ul></div>
+        <div><h3>{t('preview.role')}</h3><p>{p.myPart[lang]}</p></div>
+      </div>
+      {p.decisions[lang].length > 0 && (
+        <div class="preview__decisions">
+          {p.decisions[lang].map(([title, text]) => <div><h3>{title}</h3><p>{text}</p></div>)}
+        </div>
+      )}
+      {hasApp.includes(p.id) && (
+        <section class="preview__inside">
+          <h3>{t('preview.inside')}</h3>
+          <ProjectCover project={p} lang={lang} large view="app" />
+        </section>
+      )}
+      <ul class="preview__stack">{p.stack.map((s) => <li>{s}</li>)}</ul>
+      {p.link && <div class="acts"><a class="btn btn--primary" href={p.link.href} target="_blank" rel="noopener">{p.link.label[lang]}</a></div>}
+    </div>
+  </template>
+))}

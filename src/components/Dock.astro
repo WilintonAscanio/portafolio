@@ -1,0 +1,13 @@
+---
+import { useTranslations, type Lang } from '../i18n/ui';
+import { site } from '../data/site';
+interface Props { lang: Lang }
+const t = useTranslations(Astro.props.lang);
+---
+<nav class="dock" data-dock aria-label={t('nav.label')}>
+  <a href="#top" class="dock__mark" aria-label={site.shortName}><span class="mono" aria-hidden="true">W</span></a>
+  <a href="#projects" class="dock__keep">{t('nav.projects')}</a>
+  <a href="#about">{t('nav.about')}</a>
+  <a href="#contact">{t('nav.contact')}</a>
+  <a href={site.cv} class="dock__cv" download>{t('cv.short')}</a>
+</nav>

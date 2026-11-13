@@ -1,0 +1,51 @@
+---
+import { useTranslations, type Lang } from '../i18n/ui';
+import { entries, monthIndex, timelineStart, type Track } from '../data/timeline';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// shortcut: "today" is the build month, so ongoing bars grow only on each deploy; compute it in the browser if deploys get rare.
+const now = new Date();
+const nowYm = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+const total = monthIndex(nowYm);
+const pct = (i: number) => `${((i / total) * 100).toFixed(3)}%`;
+const fmt = new Intl.DateTimeFormat(lang === 'es' ? 'es-CO' : 'en-US', { month: 'short', year: 'numeric' });
+const label = (ym: string) => fmt.format(new Date(`${ym}-15`)).replace('.', '');
+const tracks: Track[] = ['work', 'product', 'study'];
+const [startYear] = timelineStart.split('-').map(Number);
+const years = Array.from({ length: now.getFullYear() - startYear }, (_, k) => startYear + 1 + k);
+---
+<section class="timeline" id="experience" data-timeline data-lang={lang} data-start={timelineStart} data-total={total}
+  data-none={t('timeline.none')}>
+  <div class="timeline__intro">
+    <h2>{t('timeline.title')}</h2>
+    <p>{t('timeline.sub')}</p>
+  </div>
+  <div class="timeline__chart" data-chart>
+    <div class="timeline__axis" aria-hidden="true">
+      {years.map((y) => <span style={`left:${pct(monthIndex(`${y}-01`))}`}>{y}</span>)}
+    </div>
+    {tracks.map((track) => (
+      <div class="timeline__group">
+        <h3>{t(`timeline.${track}` as const)}</h3>
+        <ul>
+          {entries.filter((e) => e.track === track).map((e) => {
+            const from = monthIndex(e.from);
+            const to = e.to ? monthIndex(e.to) : total;
+            return (
+              <li class:list={['tl-row', `tl-row--${track}`]} data-from={from} data-to={to} data-title={e.title}>
+                <span class="tl-row__text"><b>{e.title}</b> {e.role[lang]} <span class="tl-row__dates">{label(e.from)} – {e.to ? label(e.to) : t('timeline.now')}</span></span>
+                <span class="tl-row__track" aria-hidden="true"><span class="tl-row__bar" style={`left:${pct(from)};width:max(6px, ${pct(to - from)})`}></span></span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    ))}
+    <div class="timeline__cursor" data-cursor role="slider" tabindex="0" aria-label={t('timeline.slider')}
+      aria-valuemin="0" aria-valuemax={total} aria-valuenow={total}>
+      <span class="timeline__read" data-read></span>
+    </div>
+  </div>
+</section>

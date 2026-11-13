@@ -1,0 +1,107 @@
+---
+import { useTranslations, languages, type Lang } from '../i18n/ui';
+import { projects } from '../data/projects';
+import { site } from '../data/site';
+import RoutesStage from './RoutesStage.astro';
+import ProjectCard from './ProjectCard.astro';
+import ProjectPreview from './ProjectPreview.astro';
+import Dock from './Dock.astro';
+import Timeline from './Timeline.astro';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const other: Lang = lang === 'es' ? 'en' : 'es';
+const otherHref = other === 'es' ? '/' : '/en';
+const whatsapp = site.whatsapp && `https://wa.me/${site.whatsapp}`;
+---
+<div class="wrap">
+  <header class="top">
+    <span class="top__brand"><span class="mono" aria-hidden="true">W</span>{site.shortName}</span>
+    <span class="top__meta"><span>{t('role')}</span> <a href={otherHref} hreflang={other} lang={other}>{languages[other]}</a></span>
+  </header>
+
+  <main>
+    <section class="hero" id="top">
+      <div>
+        <h1>{t('hero.title')}</h1>
+        <p class="lede">{t('hero.lede')}</p>
+        <div class="acts">
+          <a class="btn btn--primary" href="#projects">{t('hero.primary')}</a>
+          <a class="btn" href={site.cv} download>{t('cv')}</a>
+        </div>
+      </div>
+      <RoutesStage lang={lang} />
+    </section>
+
+    <div class="stats">
+      <div><strong data-count="5">5</strong><span>{t('stats.restaurants')}</span></div>
+      <div><strong data-count="3">3</strong><span>{t('stats.products')}</span></div>
+      <div><strong>Web + app</strong><span>{t('stats.stack')}</span></div>
+    </div>
+
+    <section class="projects" id="projects">
+      <h2>{t('projects.title')}</h2>
+      <p class="sub">{t('projects.sub')}</p>
+      <div class="projects__grid">
+        {projects.map((p) => <ProjectCard project={p} lang={lang} />)}
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <dl class="profile">
+        <dt>{t('card.name')}</dt><dd>{site.name}</dd>
+        <dt>{t('card.role')}</dt><dd>{t('card.roleValue')}</dd>
+        <dt>{t('card.now')}</dt><dd>{t('card.nowValue')}</dd>
+        <dt>{t('card.build')}</dt><dd>{t('card.buildValue')}</dd>
+        <dt>{t('card.uses')}</dt><dd>{site.stack}</dd>
+        <dt>{t('card.since')}</dt><dd>{site.since}</dd>
+        <dt>{t('card.base')}</dt><dd>{t('footer.place')}</dd>
+      </dl>
+      <div>
+        <h2>{t('about.title')}</h2>
+        <p>{t('about.p1')}</p>
+        <p>{t('about.p2')}</p>
+      </div>
+    </section>
+
+    <Timeline lang={lang} />
+
+    <section class="contact" id="contact">
+      <h2>{t('contact.title')}</h2>
+      <div class="contact__paths">
+        <div class="path">
+          <h3>{t('contact.hire.title')}</h3>
+          <p>{t('contact.hire.text')}</p>
+          <div class="acts">
+            <a class="btn btn--primary" href={site.cv} download>{t('cv')}</a>
+            {site.linkedin && <a class="btn" href={site.linkedin} target="_blank" rel="noopener">LinkedIn</a>}
+            <a class="btn" href={site.github} target="_blank" rel="noopener">GitHub</a>
+          </div>
+        </div>
+        <div class="path path--dark">
+          <h3>{t('contact.biz.title')}</h3>
+          <p>{t('contact.biz.text')}</p>
+          <div class="acts">
+            {whatsapp && <a class="btn btn--light" href={whatsapp} target="_blank" rel="noopener">WhatsApp</a>}
+            {site.email && <a class="btn btn--ghost" href={`mailto:${site.email}`}>{site.email}</a>}
+            {!whatsapp && !site.email && <a class="btn btn--light" href={site.github} target="_blank" rel="noopener">GitHub</a>}
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>{site.name}, {t('footer.place')}</span>
+    <a href={site.github} target="_blank" rel="noopener">GitHub</a>
+    {site.linkedin && <a href={site.linkedin} target="_blank" rel="noopener">LinkedIn</a>}
+    <a href={otherHref} hreflang={other} lang={other}>{languages[other]}</a>
+  </footer>
+</div>
+
+<Dock lang={lang} />
+<ProjectPreview projects={projects} lang={lang} />
+
+<script>
+  import '../scripts/page';
+</script>
