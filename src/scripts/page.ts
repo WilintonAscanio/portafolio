@@ -1,6 +1,7 @@
 import { prefersReducedMotion } from './canvas';
 import { mountEffect } from './effects';
 import './scroll';
+import './contact';
 
 const reduce = prefersReducedMotion();
 

@@ -1,0 +1,49 @@
+---
+import { useTranslations, type Lang } from '../i18n/ui';
+import { site } from '../data/site';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const motives = [
+  { value: 'job', label: t('form.motive.job'), hint: t('form.hint.job') },
+  { value: 'business', label: t('form.motive.business'), hint: t('form.hint.business') },
+  { value: 'other', label: t('form.motive.other'), hint: t('form.hint.other') },
+] as const;
+const kinds = ['restaurant', 'distributor', 'fleet', 'other'] as const;
+---
+<form class="form" action="/api/contact" method="post" data-contact data-reveal
+  data-sending={t('form.sending')} data-sent={t('form.sent')} data-invalid={t('form.invalid')}
+  data-rate={t('form.rate')} data-failed={`${t('form.failed')} ${site.email ?? ''}`}>
+  <input type="hidden" name="lang" value={lang} />
+  <input type="hidden" name="started" data-started />
+  <fieldset class="form__motive">
+    <legend>{t('form.motive')}</legend>
+    <div class="form__pills">
+      {motives.map((m, i) => (
+        <label class="pill-choice">
+          <input type="radio" name="motive" value={m.value} checked={i === 0} data-hint={m.hint} />
+          <span>{m.label}</span>
+        </label>
+      ))}
+    </div>
+  </fieldset>
+  <div class="form__row">
+    <label class="field"><span>{t('form.name')}</span><input name="name" required minlength="2" maxlength="80" autocomplete="name" /></label>
+    <label class="field"><span>{t('form.email')}</span><input name="email" type="email" required maxlength="200" autocomplete="email" /></label>
+  </div>
+  <div class="form__row">
+    <label class="field"><span>{t('form.company')} <small>{t('form.optional')}</small></span><input name="company" maxlength="120" autocomplete="organization" /></label>
+    <label class="field form__kind"><span>{t('form.kind')}</span>
+      <select name="kind">{kinds.map((k) => <option value={k}>{t(`form.kind.${k}` as const)}</option>)}</select>
+    </label>
+  </div>
+  <label class="field"><span>{t('form.message')}</span>
+    <textarea name="message" required minlength="10" maxlength="4000" rows="5" placeholder={motives[0].hint} data-message></textarea>
+  </label>
+  <!-- Hidden from people; bots that fill it are dropped quietly. -->
+  <div class="form__trap" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off" /></label></div>
+  <div class="form__foot">
+    <button class="btn btn--primary" type="submit" data-submit>{t('form.send')}</button>
+    <p class="form__status" role="status" aria-live="polite" data-status></p>
+  </div>
+</form>

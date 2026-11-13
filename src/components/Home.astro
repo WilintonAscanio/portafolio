@@ -7,6 +7,7 @@ import ProjectCard from './ProjectCard.astro';
 import ProjectPreview from './ProjectPreview.astro';
 import Dock from './Dock.astro';
 import Timeline from './Timeline.astro';
+import ContactForm from './ContactForm.astro';
 import TradingStage from './TradingStage.astro';
 import { Image } from 'astro:assets';
 import calculatorsPhone from '../assets/projects/landing-calculators-mobile.png';
@@ -15,7 +16,6 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 const other: Lang = lang === 'es' ? 'en' : 'es';
 const otherHref = other === 'es' ? '/' : '/en';
-const whatsapp = site.whatsapp && `https://wa.me/${site.whatsapp}`;
 ---
 <div class="wrap">
   <header class="top">
@@ -92,26 +92,18 @@ const whatsapp = site.whatsapp && `https://wa.me/${site.whatsapp}`;
     <Timeline lang={lang} />
 
     <section class="contact" id="contact">
-      <h2 data-reveal>{t('contact.title')}</h2>
-      <div class="contact__paths">
-        <div class="path" data-reveal>
-          <h3>{t('contact.hire.title')}</h3>
-          <p>{t('contact.hire.text')}</p>
+      <div class="contact__grid">
+        <div class="contact__aside" data-reveal>
+          <h2>{t('contact.title')}</h2>
+          <p>{t('contact.lede')}</p>
           <div class="acts">
             <a class="btn btn--primary" href={site.cv} download>{t('cv')}</a>
             {site.linkedin && <a class="btn" href={site.linkedin} target="_blank" rel="noopener">LinkedIn</a>}
             <a class="btn" href={site.github} target="_blank" rel="noopener">GitHub</a>
           </div>
+          {site.email && <p class="contact__direct">{t('contact.direct')} <a href={`mailto:${site.email}`}>{site.email}</a></p>}
         </div>
-        <div class="path path--dark" data-reveal>
-          <h3>{t('contact.biz.title')}</h3>
-          <p>{t('contact.biz.text')}</p>
-          <div class="acts">
-            {whatsapp && <a class="btn btn--light" href={whatsapp} target="_blank" rel="noopener">WhatsApp</a>}
-            {site.email && <a class="btn btn--ghost" href={`mailto:${site.email}`}>{site.email}</a>}
-            {!whatsapp && !site.email && <a class="btn btn--light" href={site.github} target="_blank" rel="noopener">GitHub</a>}
-          </div>
-        </div>
+        <ContactForm lang={lang} />
       </div>
     </section>
   </main>
