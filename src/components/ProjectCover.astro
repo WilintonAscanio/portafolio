@@ -5,8 +5,11 @@ import type { Lang } from '../i18n/ui';
 import type { Project } from '../data/projects';
 import caelumDashboard from '../assets/projects/caelum-dashboard.png';
 import caelumKitchen from '../assets/projects/caelum-kitchen.png';
+// Inside each product: the office screen and the phone, captured from the running apps.
 import yaviDesktop from '../assets/projects/yavi-desktop.png';
 import yaviPhone from '../assets/projects/yavi-phone.png';
+import despachaoDesktop from '../assets/projects/despachao-desktop.png';
+import despachaoPhone from '../assets/projects/despachao-phone.png';
 // Caelum shows the product itself: the online menu and a customer ordering on the phone.
 import caelumMenuDesktop from '../assets/projects/caelum-menu-desktop.png';
 import caelumOrderPhone from '../assets/projects/caelum-order-phone.png';
@@ -16,7 +19,6 @@ import despachaoLandingDesktop from '../assets/projects/landing-despachao-deskto
 import despachaoLandingMobile from '../assets/projects/landing-despachao-mobile.png';
 import calculatorsLandingDesktop from '../assets/projects/landing-calculators-desktop.png';
 import calculatorsLandingMobile from '../assets/projects/landing-calculators-mobile.png';
-import DespachaoScreens from './DespachaoScreens.astro';
 import DataStage from './DataStage.astro';
 import TradingStage from './TradingStage.astro';
 
@@ -29,6 +31,11 @@ const landings: Record<string, { desktop: ImageMetadata; mobile: ImageMetadata }
   despachao: { desktop: despachaoLandingDesktop, mobile: despachaoLandingMobile },
   calculators: { desktop: calculatorsLandingDesktop, mobile: calculatorsLandingMobile },
 };
+const screens: Record<string, { desktop: ImageMetadata; phone: ImageMetadata }> = {
+  yavi: { desktop: yaviDesktop, phone: yaviPhone },
+  despachao: { desktop: despachaoDesktop, phone: despachaoPhone },
+};
+const app = screens[project.id];
 const landing = view === 'landing' ? landings[project.id] : undefined;
 const loading = large ? 'eager' : 'lazy';
 // Card covers render at about a third of the page; previews at full sheet width.
@@ -55,13 +62,12 @@ const phoneSizes = large ? '300px' : '(max-width: 900px) 30vw, 120px';
             <div class="shot shot--front"><Image src={caelumKitchen} alt="" widths={widths} sizes={sizes} format="webp" loading={loading} /></div>
           </>
         )}
-        {project.id === 'yavi' && (
+        {app && (
           <>
-            <div class="shot"><Image src={yaviDesktop} alt="" widths={widths} sizes={sizes} format="webp" loading={loading} /></div>
-            <div class="phone"><Image src={yaviPhone} alt="" widths={phoneWidths} sizes={phoneSizes} format="webp" loading={loading} /></div>
+            <div class="shot"><Image src={app.desktop} alt="" widths={widths} sizes={sizes} format="webp" loading={loading} /></div>
+            <div class="phone"><Image src={app.phone} alt="" widths={phoneWidths} sizes={phoneSizes} format="webp" loading={loading} /></div>
           </>
         )}
-        {project.id === 'despachao' && <DespachaoScreens large={large} />}
         {project.id === 'prolibu' && <DataStage lang={lang} />}
         {project.id === 'trading' && <TradingStage lang={lang} />}
       </>

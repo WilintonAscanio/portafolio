@@ -61,8 +61,9 @@ function openPreview(id: string, trigger: HTMLElement | null) {
   body.replaceChildren(template.content.cloneNode(true));
   const stage = body.querySelector<HTMLElement>('[data-effect]');
   if (stage) stopEffect = mountEffect(stage);
-  sheet.scrollTop = 0;
   dialog.showModal();
+  // Only after showModal: a closed dialog has no layout, so the reset would be ignored.
+  sheet.scrollTop = 0;
   history.replaceState(null, '', `#${id}`);
 }
 
