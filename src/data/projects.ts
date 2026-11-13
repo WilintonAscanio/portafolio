@@ -15,6 +15,8 @@ export type Project = {
   myPart: Text;
   decisions: Record<Lang, [string, string][]>;
   stack: string[];
+  /** Smaller side projects: listed under the main cards, without a cover. */
+  minor?: boolean;
   link?: { href: string; label: Text };
 };
 
@@ -129,6 +131,7 @@ export const projects: Project[] = [
   },
   {
     id: 'calculators',
+    minor: true,
     name: { es: 'Calculadoras Colombia', en: 'Colombia calculators' },
     role: { es: 'Sitio propio', en: 'My site' },
     status: { es: 'Publicado', en: 'Live' },
@@ -149,6 +152,7 @@ export const projects: Project[] = [
   },
   {
     id: 'trading',
+    minor: true,
     name: { es: 'trading-lab', en: 'trading-lab' },
     role: { es: 'Aprendizaje', en: 'Learning' },
     status: { es: 'Aprendizaje', en: 'Learning' },

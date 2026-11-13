@@ -6,7 +6,7 @@ import ProjectLogo from './ProjectLogo.astro';
 interface Props { project: Project; lang: Lang }
 const { project, lang } = Astro.props;
 ---
-<button type="button" class="card" data-project={project.id} aria-haspopup="dialog">
+<button type="button" class="card" data-project={project.id} aria-haspopup="dialog" data-reveal>
   <ProjectCover project={project} lang={lang} />
   <span class="card__label">
     <span class="card__head">

@@ -1,11 +1,10 @@
 import { prefersReducedMotion } from './canvas';
 import { mountEffect } from './effects';
-import { mountTimeline } from './timeline';
+import './scroll';
 
 const reduce = prefersReducedMotion();
 
 document.querySelectorAll<HTMLElement>('[data-effect]').forEach((stage) => mountEffect(stage));
-document.querySelectorAll<HTMLElement>('[data-timeline]').forEach(mountTimeline);
 
 /* Numbers count up once when they first appear. */
 const counter = new IntersectionObserver((entries) => {

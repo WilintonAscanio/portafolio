@@ -7,6 +7,9 @@ import ProjectCard from './ProjectCard.astro';
 import ProjectPreview from './ProjectPreview.astro';
 import Dock from './Dock.astro';
 import Timeline from './Timeline.astro';
+import TradingStage from './TradingStage.astro';
+import { Image } from 'astro:assets';
+import calculatorsPhone from '../assets/projects/landing-calculators-mobile.png';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
@@ -40,15 +43,37 @@ const whatsapp = site.whatsapp && `https://wa.me/${site.whatsapp}`;
     </div>
 
     <section class="projects" id="projects">
-      <h2>{t('projects.title')}</h2>
-      <p class="sub">{t('projects.sub')}</p>
-      <div class="projects__grid">
-        {projects.map((p) => <ProjectCard project={p} lang={lang} />)}
+      <div data-reveal>
+        <h2>{t('projects.title')}</h2>
+        <p class="sub">{t('projects.sub')}</p>
       </div>
+      <div class="projects__grid">
+        {projects.filter((p) => !p.minor).map((p) => <ProjectCard project={p} lang={lang} />)}
+      </div>
+      <h3 class="projects__more" data-reveal>{t('projects.more')}</h3>
+      <ul class="minor">
+        {projects.filter((p) => p.minor).map((p) => (
+          <li data-reveal>
+            <button type="button" class="minor__card" data-project={p.id} aria-haspopup="dialog">
+              <span class:list={['minor__thumb', `minor__thumb--${p.id}`]} aria-hidden="true">
+                {p.id === 'calculators'
+                  ? <Image src={calculatorsPhone} alt="" widths={[200, 400]} sizes="200px" format="webp" loading="lazy" />
+                  : <TradingStage lang={lang} compact />}
+              </span>
+              <span class="minor__text">
+                <span class="minor__name">{p.name[lang]}</span>
+                <span class="minor__line">{p.headline[lang]}</span>
+                <span class:list={['tag', `tag--${p.statusTone}`]}>{p.status[lang]}</span>
+              </span>
+              <span class="minor__arrow" aria-hidden="true">→</span>
+            </button>
+          </li>
+        ))}
+      </ul>
     </section>
 
     <section class="about" id="about">
-      <dl class="profile">
+      <dl class="profile" data-reveal>
         <dt>{t('card.name')}</dt><dd>{site.name}</dd>
         <dt>{t('card.role')}</dt><dd>{t('card.roleValue')}</dd>
         <dt>{t('card.now')}</dt><dd>{t('card.nowValue')}</dd>
@@ -57,7 +82,7 @@ const whatsapp = site.whatsapp && `https://wa.me/${site.whatsapp}`;
         <dt>{t('card.since')}</dt><dd>{site.since}</dd>
         <dt>{t('card.base')}</dt><dd>{t('footer.place')}</dd>
       </dl>
-      <div>
+      <div data-reveal>
         <h2>{t('about.title')}</h2>
         <p>{t('about.p1')}</p>
         <p>{t('about.p2')}</p>
@@ -67,9 +92,9 @@ const whatsapp = site.whatsapp && `https://wa.me/${site.whatsapp}`;
     <Timeline lang={lang} />
 
     <section class="contact" id="contact">
-      <h2>{t('contact.title')}</h2>
+      <h2 data-reveal>{t('contact.title')}</h2>
       <div class="contact__paths">
-        <div class="path">
+        <div class="path" data-reveal>
           <h3>{t('contact.hire.title')}</h3>
           <p>{t('contact.hire.text')}</p>
           <div class="acts">
@@ -78,7 +103,7 @@ const whatsapp = site.whatsapp && `https://wa.me/${site.whatsapp}`;
             <a class="btn" href={site.github} target="_blank" rel="noopener">GitHub</a>
           </div>
         </div>
-        <div class="path path--dark">
+        <div class="path path--dark" data-reveal>
           <h3>{t('contact.biz.title')}</h3>
           <p>{t('contact.biz.text')}</p>
           <div class="acts">

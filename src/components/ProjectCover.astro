@@ -3,11 +3,12 @@ import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import type { Lang } from '../i18n/ui';
 import type { Project } from '../data/projects';
-import caelumTables from '../assets/projects/caelum-tables.png';
+import caelumDashboard from '../assets/projects/caelum-dashboard.png';
 import yaviDesktop from '../assets/projects/yavi-desktop.png';
 import yaviPhone from '../assets/projects/yavi-phone.png';
-import caelumLandingDesktop from '../assets/projects/landing-caelum-desktop.png';
-import caelumLandingMobile from '../assets/projects/landing-caelum-mobile.png';
+// Caelum shows the app itself (a table's bill and the tables map), not its landing.
+import caelumPosDesktop from '../assets/projects/caelum-pos-desktop.png';
+import caelumTablesPhone from '../assets/projects/caelum-tables-phone.png';
 import yaviLandingDesktop from '../assets/projects/landing-yavi-desktop.png';
 import yaviLandingMobile from '../assets/projects/landing-yavi-mobile.png';
 import despachaoLandingDesktop from '../assets/projects/landing-despachao-desktop.png';
@@ -16,12 +17,13 @@ import calculatorsLandingDesktop from '../assets/projects/landing-calculators-de
 import calculatorsLandingMobile from '../assets/projects/landing-calculators-mobile.png';
 import DespachaoScreens from './DespachaoScreens.astro';
 import DataStage from './DataStage.astro';
+import TradingStage from './TradingStage.astro';
 
 interface Props { project: Project; lang: Lang; large?: boolean; view?: 'landing' | 'app' }
 const { project, lang, large = false, view = 'landing' } = Astro.props;
 
 const landings: Record<string, { desktop: ImageMetadata; mobile: ImageMetadata }> = {
-  caelum: { desktop: caelumLandingDesktop, mobile: caelumLandingMobile },
+  caelum: { desktop: caelumPosDesktop, mobile: caelumTablesPhone },
   yavi: { desktop: yaviLandingDesktop, mobile: yaviLandingMobile },
   despachao: { desktop: despachaoLandingDesktop, mobile: despachaoLandingMobile },
   calculators: { desktop: calculatorsLandingDesktop, mobile: calculatorsLandingMobile },
@@ -47,7 +49,7 @@ const phoneSizes = large ? '300px' : '(max-width: 900px) 30vw, 120px';
     ) : (
       <>
         {project.id === 'caelum' && (
-          <div class="shot"><Image src={caelumTables} alt="" widths={widths} sizes={sizes} format="webp" loading={loading} /></div>
+          <div class="shot"><Image src={caelumDashboard} alt="" widths={widths} sizes={sizes} format="webp" loading={loading} /></div>
         )}
         {project.id === 'yavi' && (
           <>
@@ -57,13 +59,7 @@ const phoneSizes = large ? '300px' : '(max-width: 900px) 30vw, 120px';
         )}
         {project.id === 'despachao' && <DespachaoScreens large={large} />}
         {project.id === 'prolibu' && <DataStage lang={lang} />}
-        {project.id === 'trading' && (
-          <svg viewBox="0 0 320 200" aria-hidden="true" class="trade">
-            <g stroke="#ecece8"><path d="M20 40H300M20 80H300M20 120H300M20 160H300" /></g>
-            <path d="M20 150 50 140 80 146 110 120 140 128 170 96 200 104 230 70 260 82 300 48" fill="none" stroke="#1f4fd6" stroke-width="3" stroke-linejoin="round" />
-            <path d="M20 150 50 146 80 150 110 138 140 142 170 124 200 132 230 112 260 120 300 104" fill="none" stroke="#b4b8c0" stroke-width="2.5" stroke-dasharray="5 5" />
-          </svg>
-        )}
+        {project.id === 'trading' && <TradingStage lang={lang} />}
       </>
     )}
   </div>

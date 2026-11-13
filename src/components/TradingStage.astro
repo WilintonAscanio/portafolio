@@ -1,0 +1,13 @@
+---
+import { useTranslations, type Lang } from '../i18n/ui';
+interface Props { lang: Lang; compact?: boolean }
+const { lang, compact = false } = Astro.props;
+const t = useTranslations(lang);
+---
+<div class:list={['stage', 'stage--fill', 'stage--trade', { 'stage--compact': compact }]} data-effect="candles" role="img" aria-label={t('trade.label')}>
+  <canvas></canvas>
+  <div class="trade__hud" aria-hidden="true">
+    <span><i class="k-strategy"></i>{t('trade.strategy')} <b data-strategy></b></span>
+    <span><i class="k-hold"></i>{t('trade.hold')} <b data-hold></b></span>
+  </div>
+</div>

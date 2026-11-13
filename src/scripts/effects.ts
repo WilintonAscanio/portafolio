@@ -1,5 +1,6 @@
 import type { Effect } from './canvas';
 import { prefersReducedMotion } from './canvas';
+import { createCandles } from './candles';
 import { createDataBars } from './data-bars';
 import { createRoutesMap } from './routes-map';
 
@@ -38,7 +39,8 @@ function kick() {
 
 /** Starts the effect on a stage; it only animates while on screen. Returns a stop function. */
 export function mountEffect(stage: HTMLElement): () => void {
-  const effect = stage.dataset.effect === 'routes' ? createRoutesMap(stage) : createDataBars(stage);
+  const kind = stage.dataset.effect;
+  const effect = kind === 'routes' ? createRoutesMap(stage) : kind === 'candles' ? createCandles(stage) : createDataBars(stage);
   const item: Running = { stage, effect, visible: false, built: false };
   running.push(item);
   observer.observe(stage);
