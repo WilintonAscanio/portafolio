@@ -1,0 +1,125 @@
+---
+// Printable CV built from the same data as the site; the PDF in /public is printed from this page.
+import '@fontsource-variable/geist';
+import '@fontsource-variable/bricolage-grotesque';
+import { site } from '../data/site';
+import { entries } from '../data/timeline';
+import { projects } from '../data/projects';
+import { useTranslations } from '../i18n/ui';
+
+const t = useTranslations('es');
+const months = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const month = (ym: string) => `${months[Number(ym.slice(5)) - 1]} ${ym.slice(0, 4)}`;
+const span = (from: string, to: string | null) => `${month(from)} – ${to ? month(to) : 'hoy'}`;
+
+const work = entries.filter((e) => e.track === 'work');
+const study = entries.filter((e) => e.track === 'study');
+const products = projects.filter((p) => !p.minor && p.id !== 'prolibu');
+const minor = projects.filter((p) => p.minor);
+// Curated: the project stacks overlap (Vue / Vue 3, Postgres / PostGIS).
+const stack = ['TypeScript', 'Vue 3', 'React · Next.js', 'Node · NestJS', 'Laravel', 'Postgres · PostGIS', 'MySQL', 'Redis', 'Expo', 'Playwright · Vitest', 'Python', 'MCP para IA'];
+const domain = new URL(Astro.site!).host;
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Hoja de vida · {site.name}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <main class="cv">
+      <header class="head">
+        <div>
+          <h1>{site.name}</h1>
+          <p class="role">Desarrollador full-stack · Colombia</p>
+        </div>
+        <ul class="contact">
+          <li><a href={Astro.site}>{domain}</a></li>
+          {site.email && <li><a href={`mailto:${site.email}`}>{site.email}</a></li>}
+          {site.linkedin && <li><a href={site.linkedin}>{site.linkedin.replace('https://www.', '')}</a></li>}
+          <li><a href={site.github}>{site.github.replace('https://', '')}</a></li>
+        </ul>
+      </header>
+
+      <p class="lede">{t('about.p1')} Hago productos para distribuidoras, flotas y restaurantes, y en Prolibu el centro de reportes con IA.</p>
+
+      <section>
+        <h2>Experiencia</h2>
+        {work.map((e) => (
+          <article class="item">
+            <div class="item__top"><h3>{e.title} <span>· {e.role.es}</span></h3><time>{span(e.from, e.to)}</time></div>
+            <p>{e.what.es}</p>
+          </article>
+        ))}
+      </section>
+
+      <section>
+        <h2>Productos propios</h2>
+        {products.map((p) => (
+          <article class="item">
+            <div class="item__top"><h3>{p.name.es} <span>· {p.headline.es}</span></h3><em>{p.status.es}</em></div>
+            <p>{p.problem.es} {p.myPart.es}</p>
+            <p class="tags">{p.stack.join(' · ')}</p>
+          </article>
+        ))}
+        <p class="also">También: {minor.map((p) => `${p.name.es} (${p.headline.es.toLowerCase()})`).join('; ')}.</p>
+      </section>
+
+      <div class="cols">
+        <section>
+          <h2>Formación</h2>
+          {study.map((e) => (
+            <article class="item item--tight">
+              <div class="item__top"><h3>{e.title}</h3><time>{span(e.from, e.to)}</time></div>
+              <p>{e.role.es}</p>
+            </article>
+          ))}
+          <article class="item item--tight">
+            <div class="item__top"><h3>Universidad Popular del Cesar</h3><time>2014 – 2016</time></div>
+            <p>Técnico electromecánico</p>
+          </article>
+        </section>
+        <section>
+          <h2>Tecnologías</h2>
+          <p class="stack">{stack.join(' · ')}</p>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  @page { size: A4; margin: 12mm 15mm; }
+  body { background: #fafaf8; color: #0f1115; font: 10pt/1.45 'Geist Variable', system-ui, sans-serif; }
+  a { color: inherit; text-decoration: none; }
+  .cv { max-width: 190mm; margin: 0 auto; padding: 14mm 0; }
+  @media print { body { background: #fff; } .cv { padding: 0; } }
+
+  .head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; padding-bottom: 12px; border-bottom: 2px solid #0f1115; }
+  h1, h2, h3 { font-family: 'Bricolage Grotesque Variable', sans-serif; letter-spacing: -0.03em; }
+  h1 { font-size: 26pt; line-height: 1; font-weight: 700; }
+  .role { margin-top: 6px; font-size: 11pt; color: #5f656e; }
+  .role::before { content: ''; display: inline-block; width: 9px; height: 9px; margin-right: 8px; border-radius: 2px; background: #f2c200; }
+  .contact { list-style: none; text-align: right; font-size: 9pt; color: #5f656e; line-height: 1.6; }
+
+  .lede { margin: 12px 0 4px; font-size: 10.5pt; max-width: 165mm; }
+
+  section { margin-top: 11px; }
+  h2 { font-size: 10pt; text-transform: uppercase; letter-spacing: 0.06em; color: #1f4fd6; margin-bottom: 6px; font-family: 'Geist Variable', sans-serif; font-weight: 650; }
+  .item { padding: 5px 0; border-top: 1px solid #e6e7ea; break-inside: avoid; }
+  .item:first-of-type { border-top: 0; }
+  .item__top { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; }
+  h3 { font-size: 11pt; font-weight: 650; }
+  h3 span { font-family: 'Geist Variable', sans-serif; font-weight: 400; color: #5f656e; font-size: 10pt; letter-spacing: 0; }
+  time, em { flex: none; font-size: 9pt; color: #5f656e; font-style: normal; font-variant-numeric: tabular-nums; }
+  .item p { margin-top: 2px; }
+  .tags { font-size: 8.5pt; color: #5f656e; }
+  .also { margin-top: 6px; font-size: 9pt; color: #5f656e; }
+  .item--tight { padding: 4px 0; }
+  .cols { display: grid; grid-template-columns: 1.3fr 1fr; gap: 28px; }
+  .stack { font-size: 9.5pt; }
+</style>
