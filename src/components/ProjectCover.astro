@@ -4,11 +4,12 @@ import type { ImageMetadata } from 'astro';
 import type { Lang } from '../i18n/ui';
 import type { Project } from '../data/projects';
 import caelumDashboard from '../assets/projects/caelum-dashboard.png';
+import caelumKitchen from '../assets/projects/caelum-kitchen.png';
 import yaviDesktop from '../assets/projects/yavi-desktop.png';
 import yaviPhone from '../assets/projects/yavi-phone.png';
-// Caelum shows the app itself (a table's bill and the tables map), not its landing.
-import caelumPosDesktop from '../assets/projects/caelum-pos-desktop.png';
-import caelumTablesPhone from '../assets/projects/caelum-tables-phone.png';
+// Caelum shows the product itself: the online menu and a customer ordering on the phone.
+import caelumMenuDesktop from '../assets/projects/caelum-menu-desktop.png';
+import caelumOrderPhone from '../assets/projects/caelum-order-phone.png';
 import yaviLandingDesktop from '../assets/projects/landing-yavi-desktop.png';
 import yaviLandingMobile from '../assets/projects/landing-yavi-mobile.png';
 import despachaoLandingDesktop from '../assets/projects/landing-despachao-desktop.png';
@@ -23,7 +24,7 @@ interface Props { project: Project; lang: Lang; large?: boolean; view?: 'landing
 const { project, lang, large = false, view = 'landing' } = Astro.props;
 
 const landings: Record<string, { desktop: ImageMetadata; mobile: ImageMetadata }> = {
-  caelum: { desktop: caelumPosDesktop, mobile: caelumTablesPhone },
+  caelum: { desktop: caelumMenuDesktop, mobile: caelumOrderPhone },
   yavi: { desktop: yaviLandingDesktop, mobile: yaviLandingMobile },
   despachao: { desktop: despachaoLandingDesktop, mobile: despachaoLandingMobile },
   calculators: { desktop: calculatorsLandingDesktop, mobile: calculatorsLandingMobile },
@@ -49,7 +50,10 @@ const phoneSizes = large ? '300px' : '(max-width: 900px) 30vw, 120px';
     ) : (
       <>
         {project.id === 'caelum' && (
-          <div class="shot"><Image src={caelumDashboard} alt="" widths={widths} sizes={sizes} format="webp" loading={loading} /></div>
+          <>
+            <div class="shot"><Image src={caelumDashboard} alt="" widths={widths} sizes={sizes} format="webp" loading={loading} /></div>
+            <div class="shot shot--front"><Image src={caelumKitchen} alt="" widths={widths} sizes={sizes} format="webp" loading={loading} /></div>
+          </>
         )}
         {project.id === 'yavi' && (
           <>

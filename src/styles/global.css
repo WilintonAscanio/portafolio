@@ -125,7 +125,8 @@ h3 { font-size: 22px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02
 .phone { border-radius: 22px; background: var(--ink); padding: 5px; box-shadow: 0 24px 50px -16px rgb(0 0 0 / 0.5); }
 .phone > * { border-radius: 17px; overflow: hidden; }
 .cover--caelum { background: #0e1630; }
-.cover--app.cover--caelum .shot { width: 84%; }
+.cover--app.cover--caelum .shot { position: absolute; width: 66%; left: 6%; top: 9%; }
+.cover--app.cover--caelum .shot--front { left: auto; top: auto; right: 6%; bottom: 9%; width: 60%; }
 .cover--yavi { background: #f5a300; }
 .cover--app.cover--yavi .shot { position: absolute; width: 74%; left: 7%; top: 16%; }
 .cover--app.cover--yavi .phone { position: absolute; width: 27%; right: 7%; top: 10%; }
@@ -285,7 +286,8 @@ h3 { font-size: 22px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02
 .cover--large.cover--app.cover--yavi .phone { width: 18%; right: 9%; top: 7%; }
 .cover--large.cover--app.cover--despachao .shot { width: 58%; left: 9%; top: 14%; }
 .cover--large.cover--app.cover--despachao .phone { width: 20%; right: 9%; top: 6%; }
-.cover--large.cover--app.cover--caelum .shot { width: 72%; }
+.cover--large.cover--app.cover--caelum .shot { width: 60%; left: 8%; top: 8%; }
+.cover--large.cover--app.cover--caelum .shot--front { left: auto; top: auto; right: 8%; bottom: 8%; width: 54%; }
 .preview__cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 40px; }
 .preview__cols h3, .preview__decisions h3 { font: 600 14px var(--font-ui); color: var(--mute); letter-spacing: 0; margin-bottom: 8px; }
 .preview__decisions h3 { font: 700 19px var(--font-display); color: var(--ink); letter-spacing: -0.02em; }
